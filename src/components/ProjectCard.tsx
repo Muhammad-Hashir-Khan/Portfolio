@@ -1,27 +1,48 @@
-import { motion, useReducedMotion } from 'motion/react';
-import type { ReactNode } from 'react';
+import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
+import type { MouseEvent as ReactMouseEvent, ReactNode } from 'react';
 import type { Project } from '../data/portfolio';
 import { spotlight } from '../lib/spotlight';
 import ProjectCover from './ProjectCover';
 
 type ProjectCardProps = {
   project: Project;
-  wide?: boolean;
   action: ReactNode;
 };
 
 /**
- * VIP project card — cursor spotlight, ghost index watermark, cover zoom,
- * lift on hover. `action` is the footer CTA (router link or modal button).
+ * VIP project card — pointer-tracked 3D tilt, cursor spotlight, ghost index
+ * watermark, cover zoom, lift on hover. `action` is the footer CTA.
  */
-export default function ProjectCard({ project, wide, action }: ProjectCardProps) {
+export default function ProjectCard({ project, action }: ProjectCardProps) {
   const reduce = useReducedMotion();
+
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const rotateX = useSpring(rx, { stiffness: 220, damping: 22 });
+  const rotateY = useSpring(ry, { stiffness: 220, damping: 22 });
+
+  const onMove = (e: ReactMouseEvent<HTMLElement>) => {
+    spotlight(e);
+    if (reduce) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    ry.set(px * 8);
+    rx.set(py * -7);
+  };
+
+  const onLeave = () => {
+    rx.set(0);
+    ry.set(0);
+  };
 
   return (
     <motion.article
-      className={wide ? 'card spot project-card project-card--wide' : 'card spot project-card'}
-      onMouseMove={spotlight}
+      className="card spot project-card"
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
       whileHover={reduce ? undefined : { y: -6 }}
+      style={reduce ? undefined : { rotateX, rotateY, transformPerspective: 900 }}
       transition={{ type: 'spring', stiffness: 320, damping: 26 }}
       aria-label={project.title}
     >

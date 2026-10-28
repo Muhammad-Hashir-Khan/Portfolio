@@ -55,10 +55,9 @@ export default function ProjectsPage() {
         <div className="container">
           <div className="projects__grid">
             {projects.map((project, i) => (
-              <Reveal key={project.id} delay={Math.min(i * 0.06, 0.2)} className={i === 0 ? 'projects__span2' : undefined}>
+              <Reveal key={project.id} delay={Math.min(i * 0.06, 0.2)}>
                 <ProjectCard
                   project={project}
-                  wide={i === 0}
                   action={
                     <button className="project-card__open" onClick={() => setActive(project)}>
                       Read case study

@@ -1,14 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import { LuArrowRight, LuArrowUpRight } from 'react-icons/lu';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import { LuArrowRight, LuArrowUpRight, LuPause, LuPlay } from 'react-icons/lu';
 import Page from '../components/Page';
 import Portrait from '../components/Portrait';
 import SectionHeading from '../components/SectionHeading';
 import Reveal from '../components/Reveal';
 import Marquee from '../components/Marquee';
 import ProjectCard from '../components/ProjectCard';
-import { profile, projects, services } from '../data/portfolio';
+import { profile, projects, services, type Service } from '../data/portfolio';
 import { waLink } from '../lib/links';
 
 const LINE_EASE = [0.16, 1, 0.3, 1] as const;
@@ -220,28 +220,28 @@ export default function HomePage({ ready }: { ready: boolean }) {
         </div>
       </section>
 
-      {/* ═══ CAPABILITIES SLIDER ═══ */}
+      {/* ═══ CAPABILITIES — 3D COVERFLOW ═══ */}
       <CapabilitiesSlider />
 
-      {/* ═══ CTA BAND ═══ */}
-      <section className="cta-band" aria-label="Next step">
-        <div className="container">
-          <Reveal className="cta-band__inner">
+      {/* ═══ CTA SLAB ═══ */}
+      <section className="cta-slab" aria-label="Next step">
+        <div className="container cta-slab__inner">
+          <Reveal className="cta-slab__text">
             <p className="mono-label">Next step</p>
             <h2>
               Have a repetitive process?
               <br />
               <span className="tx-crimson">Let&rsquo;s automate it.</span>
             </h2>
-            <div className="hero__cta-row cta-band__row">
-              <Link to="/contact" className="btn btn--primary">
-                Start a Conversation
-                <LuArrowRight aria-hidden="true" />
-              </Link>
-              <Link to="/services" className="btn btn--ghost">
-                View Services
-              </Link>
-            </div>
+          </Reveal>
+          <Reveal delay={0.12} className="cta-slab__action cta-slab__action--row">
+            <Link to="/contact" className="btn btn--primary">
+              Start a Conversation
+              <LuArrowRight aria-hidden="true" />
+            </Link>
+            <Link to="/services" className="btn btn--ghost">
+              View Services
+            </Link>
           </Reveal>
         </div>
       </section>
@@ -249,93 +249,164 @@ export default function HomePage({ ready }: { ready: boolean }) {
   );
 }
 
-/* ── auto-drifting capabilities rail (infinite, pauses on hover) ────── */
+/* ── 3D coverflow capabilities carousel ─────────────────────────────── */
 
 function CapabilitiesSlider() {
   const reduce = useReducedMotion();
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const offsetRef = useRef(0);
-  const pausedRef = useRef(false);
+  const [active, setActive] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const hoverRef = useRef(false);
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const tiltX = useMotionValue(0);
+  const stageTilt = useSpring(tiltX, { stiffness: 140, damping: 20 });
+  const n = services.length;
 
+  // auto-advance — paused on hover, or via the stop button
   useEffect(() => {
-    if (reduce) return;
+    if (!playing || reduce) return;
+    const id = window.setInterval(() => {
+      if (!hoverRef.current) setActive((a) => (a + 1) % n);
+    }, 3600);
+    return () => window.clearInterval(id);
+  }, [playing, reduce, n]);
 
-    let raf = 0;
-    let last = performance.now();
-    const speed = 0.045; // px per ms
+  // shortest signed distance from the active card
+  const offsetOf = (i: number) => {
+    let r = (i - active) % n;
+    if (r > n / 2) r -= n;
+    if (r < -n / 2) r += n;
+    return r;
+  };
 
-    const tick = (now: number) => {
-      const dt = Math.min(now - last, 64);
-      last = now;
-      const el = trackRef.current;
-      if (el && !pausedRef.current) {
-        const cs = window.getComputedStyle(el);
-        const gap = parseFloat(cs.columnGap || cs.gap) || 0;
-        const setWidth = (el.scrollWidth + gap) / 2;
-        if (setWidth > 0) {
-          offsetRef.current = (offsetRef.current + dt * speed) % setWidth;
-          el.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
+  const onStageMove = (e: ReactMouseEvent) => {
+    const el = stageRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    tiltX.set(((e.clientY - rect.top) / rect.height - 0.5) * -9);
+  };
 
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [reduce]);
-
-  const cards = [...services, ...services];
+  // reduced motion: quiet static grid
+  if (reduce) {
+    return (
+      <section className="section slider-section" aria-label="Capabilities">
+        <div className="container">
+          <SectionHeading label="Capabilities" title="What I bring to a build." />
+        </div>
+        <div className="container cap-static">
+          {services.map((service) => (
+            <CapCard key={service.id} service={service} />
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="section slider-section" aria-label="Capabilities">
       <div className="container">
-        <SectionHeading label="Capabilities" title="What I bring to a build." />
+        <div className="section-split-head">
+          <SectionHeading label="Capabilities" title="What I bring to a build." />
+          <Reveal className="section-split-head__link">
+            <div className="cap-controls">
+              <span className="cap-controls__count mono-label" aria-live="polite">
+                {String(active + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
+              </span>
+              <button
+                className="icon-btn"
+                onClick={() => setActive((a) => (a - 1 + n) % n)}
+                aria-label="Previous service"
+              >
+                <LuArrowRight style={{ transform: 'rotate(180deg)' }} aria-hidden="true" />
+              </button>
+              <button className="icon-btn" onClick={() => setActive((a) => (a + 1) % n)} aria-label="Next service">
+                <LuArrowRight aria-hidden="true" />
+              </button>
+              <button
+                className={playing ? 'icon-btn' : 'icon-btn cap-play--paused'}
+                onClick={() => setPlaying((p) => !p)}
+                aria-label={playing ? 'Pause auto-slide' : 'Resume auto-slide'}
+              >
+                {playing ? <LuPause aria-hidden="true" /> : <LuPlay aria-hidden="true" />}
+              </button>
+            </div>
+          </Reveal>
+        </div>
       </div>
 
       <div
-        className={reduce ? 'cap-viewport cap-viewport--static' : 'cap-viewport'}
-        onMouseEnter={() => (pausedRef.current = true)}
-        onMouseLeave={() => (pausedRef.current = false)}
-        onFocusCapture={() => (pausedRef.current = true)}
-        onBlurCapture={() => (pausedRef.current = false)}
+        className="cap-stage"
+        ref={stageRef}
+        onMouseMove={onStageMove}
+        onMouseEnter={() => (hoverRef.current = true)}
+        onMouseLeave={() => {
+          hoverRef.current = false;
+          tiltX.set(0);
+        }}
         role="region"
-        aria-label="Services — auto-scrolling; hover to pause"
-        tabIndex={reduce ? 0 : -1}
+        aria-label="Services carousel — auto-advancing, hover to pause"
       >
-        <div className={reduce ? 'cap-track cap-track--static' : 'cap-track'} ref={trackRef}>
-          {cards.map((service, i) => {
-            const duplicate = i >= services.length;
+        <motion.div className="cap-stage__tilt" style={{ rotateX: stageTilt }}>
+          {services.map((service, i) => {
+            const r = offsetOf(i);
+            const abs = Math.abs(r);
+            const isActive = r === 0;
             return (
-              <article
-                className="cap-card"
-                key={`${service.id}-${i}`}
-                aria-hidden={duplicate || undefined}
-                inert={duplicate || undefined}
+              <motion.article
+                key={service.id}
+                className="cap-card cap-card3d"
+                initial={false}
+                animate={{
+                  x: r * 245,
+                  scale: 1 - Math.min(abs, 2) * 0.09,
+                  rotateY: r * -30,
+                  opacity: abs > 2 ? 0 : 1 - abs * 0.24,
+                  filter: isActive ? 'blur(0px) brightness(1)' : 'blur(1.6px) brightness(0.55)',
+                }}
+                transition={{ type: 'spring', stiffness: 230, damping: 27 }}
+                style={{ zIndex: 20 - abs, pointerEvents: abs > 2 ? 'none' : undefined }}
+                onClick={() => !isActive && setActive(i)}
+                inert={!isActive || undefined}
+                aria-hidden={!isActive || undefined}
               >
-                <span className="mono-label">Service {service.index}</span>
-                <h3>{service.name}</h3>
-                <p>{service.description}</p>
-                <div className="cap-card__foot">
-                  <span className="slider__price">
-                    FROM <b>${service.price}</b>
-                  </span>
-                  <a
-                    className="slider__link"
-                    href={waLink(service.waMessage)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Discuss ${service.name} on WhatsApp`}
-                    tabIndex={duplicate ? -1 : undefined}
-                  >
-                    Discuss
-                    <LuArrowUpRight aria-hidden="true" />
-                  </a>
-                </div>
-              </article>
+                <CapCardInner service={service} />
+              </motion.article>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
+  );
+}
+
+function CapCardInner({ service }: { service: Service }) {
+  return (
+    <>
+      <span className="mono-label">Service {service.index}</span>
+      <h3>{service.name}</h3>
+      <p>{service.description}</p>
+      <div className="cap-card__foot">
+        <span className="slider__price">
+          FROM <b>${service.price}</b>
+        </span>
+        <a
+          className="slider__link"
+          href={waLink(service.waMessage)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Discuss ${service.name} on WhatsApp`}
+        >
+          Discuss
+          <LuArrowUpRight aria-hidden="true" />
+        </a>
+      </div>
+    </>
+  );
+}
+
+function CapCard({ service }: { service: Service }) {
+  return (
+    <article className="cap-card">
+      <CapCardInner service={service} />
+    </article>
   );
 }

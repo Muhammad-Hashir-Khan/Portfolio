@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { LuArrowUpRight } from 'react-icons/lu';
 import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
@@ -82,34 +81,6 @@ export default function ServicesPage() {
               Each line shows a <b>starting price</b>. Real quotes depend on scope, integrations and delivery
               requirements — after a short conversation, you get a fixed, written scope before any work begins.
             </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
-      <section className="cta-band" aria-label="Start a project">
-        <div className="container">
-          <Reveal className="cta-band__inner">
-            <p className="mono-label">Ready when you are</p>
-            <h2>
-              Send me the process
-              <br />
-              <span className="tx-crimson">that slows you down.</span>
-            </h2>
-            <div className="hero__cta-row cta-band__row">
-              <a
-                className="btn btn--primary"
-                href={waLink("Hello Hashir — I'd like to discuss a project.")}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Message on WhatsApp
-                <LuArrowUpRight aria-hidden="true" />
-              </a>
-              <Link to="/contact" className="btn btn--ghost">
-                Contact Page
-              </Link>
-            </div>
           </Reveal>
         </div>
       </section>

@@ -110,35 +110,6 @@ export default function PricingPage() {
           </Reveal>
         </div>
       </section>
-
-      {/* ── Editorial CTA slab (no box) ── */}
-      <section className="cta-slab" aria-label="Get a quote">
-        <div className="container cta-slab__inner">
-          <Reveal className="cta-slab__text">
-            <p className="mono-label">Exact number</p>
-            <h2>
-              Tell me the scope.
-              <br />
-              <span className="tx-crimson">Get a fixed quote.</span>
-            </h2>
-            <p className="cta-slab__sub">
-              A short conversation is enough for me to map the work and return a written, fixed quote — no
-              estimates that drift, no surprise invoices.
-            </p>
-          </Reveal>
-          <Reveal delay={0.12} className="cta-slab__action">
-            <a
-              className="btn btn--primary"
-              href={waLink('Hello Hashir — I want a quote for a project. Here is the scope:')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Request a Quote
-              <LuArrowUpRight aria-hidden="true" />
-            </a>
-          </Reveal>
-        </div>
-      </section>
     </Page>
   );
 }
