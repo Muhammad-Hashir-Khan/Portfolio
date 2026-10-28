@@ -21,7 +21,6 @@ export default function SectionHeading({ label, title, lead, children }: Section
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="eyebrow" aria-hidden="true">
-        <span className="eyebrow__tick" />
         <span className="eyebrow__label">{label}</span>
         <span className="eyebrow__line" />
       </div>

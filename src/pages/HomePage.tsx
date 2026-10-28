@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { LuArrowRight, LuArrowUpRight } from 'react-icons/lu';
@@ -194,25 +194,28 @@ export default function HomePage({ ready }: { ready: boolean }) {
           </div>
 
           <div className="projects__grid projects__grid--home">
-            <ProjectCard
-              project={projects[0]}
-              wide
-              action={
-                <Link to="/projects" className="project-card__open">
-                  View case studies
-                  <LuArrowUpRight aria-hidden="true" />
-                </Link>
-              }
-            />
-            <ProjectCard
-              project={projects[1]}
-              action={
-                <Link to="/projects" className="project-card__open">
-                  View case studies
-                  <LuArrowUpRight aria-hidden="true" />
-                </Link>
-              }
-            />
+            <Reveal>
+              <ProjectCard
+                project={projects[0]}
+                action={
+                  <Link to="/projects" className="project-card__open">
+                    View case studies
+                    <LuArrowUpRight aria-hidden="true" />
+                  </Link>
+                }
+              />
+            </Reveal>
+            <Reveal delay={0.08}>
+              <ProjectCard
+                project={projects[1]}
+                action={
+                  <Link to="/projects" className="project-card__open">
+                    View case studies
+                    <LuArrowUpRight aria-hidden="true" />
+                  </Link>
+                }
+              />
+            </Reveal>
           </div>
         </div>
       </section>
@@ -246,84 +249,92 @@ export default function HomePage({ ready }: { ready: boolean }) {
   );
 }
 
-/* ── draggable/scrollable capabilities rail ─────────────────────────── */
+/* ── auto-drifting capabilities rail (infinite, pauses on hover) ────── */
 
 function CapabilitiesSlider() {
+  const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
-
-  const update = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    setCanPrev(el.scrollLeft > 8);
-    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
-  };
+  const offsetRef = useRef(0);
+  const pausedRef = useRef(false);
 
   useEffect(() => {
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
+    if (reduce) return;
 
-  const nudge = (dir: 1 | -1) => {
-    const reduced =
-      typeof window.matchMedia === 'function' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    trackRef.current?.scrollBy({ left: dir * 400, behavior: reduced ? 'auto' : 'smooth' });
-  };
+    let raf = 0;
+    let last = performance.now();
+    const speed = 0.045; // px per ms
+
+    const tick = (now: number) => {
+      const dt = Math.min(now - last, 64);
+      last = now;
+      const el = trackRef.current;
+      if (el && !pausedRef.current) {
+        const cs = window.getComputedStyle(el);
+        const gap = parseFloat(cs.columnGap || cs.gap) || 0;
+        const setWidth = (el.scrollWidth + gap) / 2;
+        if (setWidth > 0) {
+          offsetRef.current = (offsetRef.current + dt * speed) % setWidth;
+          el.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [reduce]);
+
+  const cards = [...services, ...services];
 
   return (
     <section className="section slider-section" aria-label="Capabilities">
       <div className="container">
-        <div className="section-split-head">
-          <SectionHeading label="Capabilities" title="What I bring to a build." />
-          <Reveal className="section-split-head__link">
-            <div className="slider__arrows">
-              <button className="icon-btn" onClick={() => nudge(-1)} disabled={!canPrev} aria-label="Scroll capabilities back">
-                <LuArrowRight style={{ transform: 'rotate(180deg)' }} aria-hidden="true" />
-              </button>
-              <button className="icon-btn" onClick={() => nudge(1)} disabled={!canNext} aria-label="Scroll capabilities forward">
-                <LuArrowRight aria-hidden="true" />
-              </button>
-            </div>
-          </Reveal>
-        </div>
+        <SectionHeading label="Capabilities" title="What I bring to a build." />
       </div>
 
       <div
-        className="slider__track"
-        ref={trackRef}
-        onScroll={update}
+        className={reduce ? 'cap-viewport cap-viewport--static' : 'cap-viewport'}
+        onMouseEnter={() => (pausedRef.current = true)}
+        onMouseLeave={() => (pausedRef.current = false)}
+        onFocusCapture={() => (pausedRef.current = true)}
+        onBlurCapture={() => (pausedRef.current = false)}
         role="region"
-        aria-label="Services — scroll horizontally"
-        tabIndex={0}
+        aria-label="Services — auto-scrolling; hover to pause"
+        tabIndex={reduce ? 0 : -1}
       >
-        {services.map((service, i) => (
-          <Reveal key={service.id} delay={Math.min(i * 0.04, 0.24)} className="slider__slide">
-            <div className="slider__card">
-              <span className="mono-label">Service {service.index}</span>
-              <h3>{service.name}</h3>
-              <p>{service.description}</p>
-              <div className="slider__foot">
-                <span className="slider__price">
-                  FROM <b>${service.price}</b>
-                </span>
-                <a
-                  className="slider__link"
-                  href={waLink(service.waMessage)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Discuss ${service.name} on WhatsApp`}
-                >
-                  Discuss
-                  <LuArrowUpRight aria-hidden="true" />
-                </a>
-              </div>
-            </div>
-          </Reveal>
-        ))}
-        <span className="slider__spacer" aria-hidden="true" />
+        <div className={reduce ? 'cap-track cap-track--static' : 'cap-track'} ref={trackRef}>
+          {cards.map((service, i) => {
+            const duplicate = i >= services.length;
+            return (
+              <article
+                className="cap-card"
+                key={`${service.id}-${i}`}
+                aria-hidden={duplicate || undefined}
+                inert={duplicate || undefined}
+              >
+                <span className="mono-label">Service {service.index}</span>
+                <h3>{service.name}</h3>
+                <p>{service.description}</p>
+                <div className="cap-card__foot">
+                  <span className="slider__price">
+                    FROM <b>${service.price}</b>
+                  </span>
+                  <a
+                    className="slider__link"
+                    href={waLink(service.waMessage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Discuss ${service.name} on WhatsApp`}
+                    tabIndex={duplicate ? -1 : undefined}
+                  >
+                    Discuss
+                    <LuArrowUpRight aria-hidden="true" />
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

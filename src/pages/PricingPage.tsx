@@ -21,6 +21,16 @@ export default function PricingPage() {
           lines={['Starting points,', <>not <span className="tx-crimson">ceilings.</span></>]}
           lead="No locked tiers, no packaged boxes — just a clear starting number per service line, and an exact quote once the scope is understood."
         />
+
+        <Reveal className="price-meta" delay={0.15}>
+          <span>{services.length} services</span>
+          <i aria-hidden="true" />
+          <span>{pricing.currency}</span>
+          <i aria-hidden="true" />
+          <span>Starting prices</span>
+          <i aria-hidden="true" />
+          <span>Scope-based quotes</span>
+        </Reveal>
       </div>
 
       {/* ── Unboxed price index ── */}
@@ -44,8 +54,9 @@ export default function PricingPage() {
                       </span>
 
                       <span className="price-row__name">
+                        <span className="mono-label">{service.index}</span>
                         <b>{service.name}</b>
-                        <span className="mono-label">Starting from · {pricing.currency}</span>
+                        {service.note && <span className="price-row__note">{service.note}</span>}
                       </span>
 
                       <span className="price-row__toggle" aria-hidden="true">
@@ -65,7 +76,6 @@ export default function PricingPage() {
                         >
                           <div className="price-row__panel-inner">
                             <p>{service.description}</p>
-                            {service.note && <p className="service-row__note">{service.note}</p>}
 
                             <ul className="chip-list">
                               {service.capabilities.map((cap) => (
@@ -101,27 +111,31 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="cta-band" aria-label="Get a quote">
-        <div className="container">
-          <Reveal className="cta-band__inner">
+      {/* ── Editorial CTA slab (no box) ── */}
+      <section className="cta-slab" aria-label="Get a quote">
+        <div className="container cta-slab__inner">
+          <Reveal className="cta-slab__text">
             <p className="mono-label">Exact number</p>
             <h2>
               Tell me the scope.
               <br />
               <span className="tx-crimson">Get a fixed quote.</span>
             </h2>
-            <div className="hero__cta-row cta-band__row">
-              <a
-                className="btn btn--primary"
-                href={waLink('Hello Hashir — I want a quote for a project. Here is the scope:')}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Request a Quote
-                <LuArrowUpRight aria-hidden="true" />
-              </a>
-            </div>
+            <p className="cta-slab__sub">
+              A short conversation is enough for me to map the work and return a written, fixed quote — no
+              estimates that drift, no surprise invoices.
+            </p>
+          </Reveal>
+          <Reveal delay={0.12} className="cta-slab__action">
+            <a
+              className="btn btn--primary"
+              href={waLink('Hello Hashir — I want a quote for a project. Here is the scope:')}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Request a Quote
+              <LuArrowUpRight aria-hidden="true" />
+            </a>
           </Reveal>
         </div>
       </section>

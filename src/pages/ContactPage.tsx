@@ -6,7 +6,7 @@ import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
 import Reveal from '../components/Reveal';
 import { opportunities, profile, resume, socialLinks, type SocialId } from '../data/portfolio';
-import { mailDefault, waLink } from '../lib/links';
+import { gmailCompose, gmailDefault, mailLink, waLink } from '../lib/links';
 import { spotlight } from '../lib/spotlight';
 
 const CHANNEL_ICONS: Record<SocialId, IconType> = {
@@ -27,17 +27,27 @@ export default function ContactPage() {
         />
       </div>
 
-      {/* ── Giant email ── */}
+      {/* ── Email — one line, opens mailbox in a new tab ── */}
       <section className="section contact-email-section" aria-label="Email">
         <div className="container">
-          <Reveal>
-            <a className="contact-email" href={mailDefault()}>
-              <span className="mono-label">Email — click to compose</span>
-              <span className="contact-email__address">
-                {profile.email}
-                <LuArrowUpRight aria-hidden="true" />
+          <Reveal className="contact-email-block">
+            <p className="mono-label contact-email__label">Email — opens your mailbox in a new tab</p>
+            <a
+              className="contact-email"
+              href={gmailDefault()}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="contact-email__address">{profile.email}</span>
+              <span className="contact-email__arrow" aria-hidden="true">
+                <LuArrowUpRight />
               </span>
             </a>
+            <div className="contact-email__alt">
+              <a href={mailLink('Portfolio contact — Muhammad Hashir Khan')}>Use default mail app</a>
+              <i aria-hidden="true">·</i>
+              <CopyEmailButton />
+            </div>
           </Reveal>
         </div>
       </section>
@@ -51,8 +61,8 @@ export default function ContactPage() {
               <div className="contact-channels__grid">
                 <Reveal>
                   <a
-                    className="tile spot contact-tile contact-tile--wa"
-                    href={waDefaultHref()}
+                    className="tile spot contact-tile"
+                    href={waLink("Hello Hashir — I found your portfolio and I'd like to connect.")}
                     target="_blank"
                     rel="noopener noreferrer"
                     onMouseMove={spotlight}
@@ -105,7 +115,6 @@ export default function ContactPage() {
         <div className="container">
           <Reveal className="section-head">
             <div className="eyebrow" aria-hidden="true">
-              <span className="eyebrow__tick" />
               <span className="eyebrow__label">Open to</span>
               <span className="eyebrow__line" />
             </div>
@@ -141,11 +150,32 @@ export default function ContactPage() {
   );
 }
 
-function waDefaultHref(): string {
-  return waLink("Hello Hashir — I found your portfolio and I'd like to connect.");
+/* ── copy-to-clipboard for the address ──────────────────────────────── */
+
+function CopyEmailButton() {
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // clipboard unavailable (http / permissions) — silently ignore
+    }
+  };
+
+  return (
+    <>
+      <button onClick={copy}>Copy address</button>
+      <span className={copied ? 'copy-flash copy-flash--on' : 'copy-flash'} role="status">
+        {copied ? 'Copied ✓' : ''}
+      </span>
+    </>
+  );
 }
 
-/* ── Resume slot: checks for the PDF, adapts automatically ───────────── */
+/* ── Resume: always a real button — behavior adapts to the file ─────── */
 
 type ResumeState = 'checking' | 'ready' | 'missing';
 
@@ -172,42 +202,47 @@ function ResumeButton() {
     };
   }, []);
 
+  const sub =
+    state === 'ready'
+      ? 'PDF · downloads directly'
+      : state === 'checking'
+        ? 'Checking availability…'
+        : 'PDF is being updated — clicking sends me an email request';
+
   if (state === 'ready') {
     return (
-      <a className="tile spot resume-row resume-row--ready" href={resume.file} download onMouseMove={spotlight}>
-        <LuFileText aria-hidden="true" />
-        <div>
+      <a className="resume-btn resume-btn--ready" href={resume.file} download>
+        <span className="resume-btn__icon" aria-hidden="true">
+          <LuFileText />
+        </span>
+        <span className="resume-btn__text">
           <b>{resume.label}</b>
-          <span>PDF · opens the download directly</span>
-        </div>
-        <span className="resume-row__icon" aria-hidden="true">
+          <span>{sub}</span>
+        </span>
+        <span className="resume-btn__action" aria-hidden="true">
           <LuDownload />
         </span>
       </a>
     );
   }
 
-  if (state === 'checking') {
-    return (
-      <div className="tile resume-row" aria-live="polite">
-        <LuFileText aria-hidden="true" />
-        <div>
-          <b>{resume.label}</b>
-          <span>Checking availability…</span>
-        </div>
-        <span className="pulse-dot" aria-hidden="true" />
-      </div>
-    );
-  }
-
   return (
-    <a className="tile resume-row resume-row--missing" href={mailDefault()} onMouseMove={spotlight}>
-      <LuFileText aria-hidden="true" />
-      <div>
-        <b>Resume coming soon</b>
-        <span>Meanwhile, email me and I&rsquo;ll send it directly</span>
-      </div>
-      <LuArrowUpRight aria-hidden="true" />
+    <a
+      className="resume-btn"
+      href={gmailCompose('Resume request — Muhammad Hashir Khan', 'Hello Hashir,\n\nCould you send me your latest resume?\n\n')}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span className="resume-btn__icon" aria-hidden="true">
+        <LuFileText />
+      </span>
+      <span className="resume-btn__text">
+        <b>{resume.label}</b>
+        <span>{sub}</span>
+      </span>
+      <span className="resume-btn__action" aria-hidden="true">
+        <LuArrowUpRight />
+      </span>
     </a>
   );
 }

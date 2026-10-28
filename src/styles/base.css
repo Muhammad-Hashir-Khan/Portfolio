@@ -165,15 +165,6 @@ h4 {
   gap: 0.9rem;
 }
 
-.eyebrow__tick {
-  width: 10px;
-  height: 10px;
-  background: var(--crimson);
-  border-radius: 2px;
-  transform: rotate(45deg);
-  flex: none;
-}
-
 .eyebrow__index {
   font-family: var(--font-mono);
   font-size: 0.72rem;

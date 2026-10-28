@@ -27,7 +27,6 @@ export default function PageHeader({ label, lines, lead }: PageHeaderProps) {
         transition={{ duration: 0.6, ease: LINE_EASE }}
         aria-hidden="true"
       >
-        <span className="eyebrow__tick" />
         <span className="eyebrow__label">{label}</span>
         <span className="eyebrow__line" />
       </motion.div>

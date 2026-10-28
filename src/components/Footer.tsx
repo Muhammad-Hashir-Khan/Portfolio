@@ -4,7 +4,7 @@ import type { IconType } from 'react-icons';
 import { LuArrowUp, LuLinkedin, LuMail, LuMessageCircle } from 'react-icons/lu';
 import { SiFiverr, SiGithub, SiUpwork } from 'react-icons/si';
 import { profile, socialLinks, type SocialId } from '../data/portfolio';
-import { mailDefault, waDefault } from '../lib/links';
+import { gmailDefault, waDefault } from '../lib/links';
 
 const BRAND_ICONS: Record<SocialId, IconType> = {
   linkedin: LuLinkedin,
@@ -57,9 +57,9 @@ export default function Footer() {
               <h4>Direct channels</h4>
               <ul>
                 <li>
-                  <a href={mailDefault()}>
+                  <a href={gmailDefault()} target="_blank" rel="noopener noreferrer">
                     <LuMail aria-hidden="true" />
-                    {profile.email}
+                    Email me
                   </a>
                 </li>
                 <li>
@@ -72,7 +72,7 @@ export default function Footer() {
             </div>
 
             <div className="footer__col">
-              <h4>Profiles &amp; pages</h4>
+              <h4>Profiles</h4>
               <ul>
                 {socialLinks.map((social) => {
                   const Icon = BRAND_ICONS[social.id];
@@ -86,6 +86,10 @@ export default function Footer() {
                   );
                 })}
               </ul>
+            </div>
+
+            <div className="footer__col">
+              <h4>Pages</h4>
               <ul>
                 {FOOTER_LINKS.map((link) => (
                   <li key={link.to}>

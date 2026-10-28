@@ -175,6 +175,51 @@
   margin-top: 2.4rem;
 }
 
+/* equal-height cards in every row — the Reveal wrapper becomes the flex column */
+.projects__grid > * {
+  display: flex;
+  flex-direction: column;
+}
+
+.projects__grid .project-card {
+  flex: 1;
+  width: 100%;
+}
+
+/* home featured pair — compact, strictly aligned */
+.projects__grid--home {
+  margin-top: 2rem;
+  gap: 1.3rem;
+}
+
+.projects__grid--home .project-card__cover {
+  height: 205px;
+}
+
+.projects__grid--home .project-card__ghost {
+  font-size: 4.4rem;
+  top: -0.06em;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.06);
+}
+
+.projects__grid--home .project-card__body {
+  padding: 1.35rem 1.4rem 1.45rem;
+  gap: 0.7rem;
+}
+
+.projects__grid--home .project-card__body h3 {
+  font-size: 1.12rem;
+}
+
+.projects__grid--home .project-card__body > p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.projects__grid--home .project-card__foot {
+  padding-top: 1rem;
+}
+
 .projects__span2 {
   grid-column: 1 / -1;
 }
@@ -675,6 +720,25 @@
 
 /* ═══ PRICING — UNBOXED INDEX ═══ */
 
+.price-meta {
+  margin-top: 1.9rem;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.price-meta i {
+  width: 26px;
+  height: 1px;
+  background: var(--border-strong);
+}
+
 .price-list {
   border-top: 1px solid var(--border);
 }
@@ -723,16 +787,27 @@
 
 .price-row__name {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.32rem;
   min-width: 0;
+}
+
+.price-row__name .mono-label {
+  color: var(--crimson);
 }
 
 .price-row__name b {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
   text-transform: uppercase;
   letter-spacing: 0.01em;
+}
+
+.price-row__note {
+  color: #7c7f88;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  max-width: 52ch;
 }
 
 .price-row__toggle {
@@ -794,6 +869,53 @@
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.75;
+}
+
+/* ═══ EDITORIAL CTA SLAB (pricing — deliberately not a box) ═══ */
+
+.cta-slab {
+  border-top: 1px solid var(--border);
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+
+.cta-slab__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.cta-slab__text {
+  display: grid;
+  gap: 1.1rem;
+  max-width: 640px;
+}
+
+.cta-slab__text h2 {
+  font-size: clamp(1.9rem, 4.6vw, 3.2rem);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+}
+
+.cta-slab__sub {
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.75;
+  max-width: 52ch;
+}
+
+.cta-slab__action {
+  flex: none;
+}
+
+@media (max-width: 720px) {
+  .cta-slab__inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
 }
 
 @media (max-width: 720px) {
@@ -987,46 +1109,125 @@
 
 /* ═══ CONTACT (VIP) ═══ */
 
-.contact-email {
-  display: block;
-  padding: clamp(1.6rem, 4vw, 2.6rem) 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+.contact-email-block {
+  display: grid;
+  gap: 0.95rem;
+  justify-items: start;
 }
 
-.contact-email .mono-label {
-  display: block;
-  margin-bottom: 0.9rem;
+.contact-email__label {
   color: var(--crimson);
 }
 
-.contact-email__address {
+.contact-email {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.28em;
+  gap: 0.45em;
+  max-width: 100%;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.3rem, 4.6vw, 3.4rem);
-  letter-spacing: -0.015em;
+  font-size: clamp(1.05rem, 2.7vw, 2.35rem);
+  letter-spacing: -0.01em;
   line-height: 1.2;
-  word-break: break-word;
+  white-space: nowrap;
+  padding-bottom: 0.4rem;
   transition: color var(--t-med) var(--ease);
 }
 
-.contact-email__address svg {
-  width: 0.62em;
-  height: 0.62em;
+.contact-email::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--crimson);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.contact-email:hover {
+  color: var(--crimson);
+}
+
+.contact-email:hover::after {
+  transform: scaleX(1);
+}
+
+.contact-email__arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 1.9em;
+  height: 1.9em;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
   color: var(--crimson);
   flex: none;
-  transition: transform var(--t-med) var(--ease-out);
+  transition:
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    transform var(--t-med) var(--ease-out);
 }
 
-.contact-email:hover .contact-email__address {
+.contact-email__arrow svg {
+  width: 0.55em;
+  height: 0.55em;
+}
+
+.contact-email:hover .contact-email__arrow {
+  background: var(--crimson);
+  color: #fff;
+  transform: translate(0.12em, -0.12em);
+}
+
+.contact-email__alt {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.contact-email__alt a,
+.contact-email__alt button {
+  font-size: 0.84rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.25);
+  transition: color var(--t-fast) var(--ease);
+}
+
+.contact-email__alt a:hover,
+.contact-email__alt button:hover {
   color: var(--crimson);
 }
 
-.contact-email:hover .contact-email__address svg {
-  transform: translate(0.12em, -0.12em);
+.contact-email__alt i {
+  font-style: normal;
+  color: var(--border-strong);
+}
+
+.copy-flash {
+  min-width: 4.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--crimson);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+.copy-flash--on {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .contact-email {
+    white-space: normal;
+    word-break: break-all;
+  }
 }
 
 .contact-grid {
@@ -1095,42 +1296,88 @@
   gap: 1.4rem;
 }
 
-.resume-row {
+/* real, always-visible resume button — behavior adapts to the PDF slot */
+.resume-btn {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
   width: 100%;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01)), var(--surface);
+  transition:
+    border-color var(--t-fast) var(--ease),
+    transform var(--t-med) var(--ease-out),
+    box-shadow var(--t-med) var(--ease);
 }
 
-.resume-row--ready:hover {
-  border-color: rgba(255, 48, 59, 0.5);
+.resume-btn:hover {
+  border-color: var(--crimson);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
 }
 
-.resume-row__icon {
-  margin-left: auto;
+.resume-btn__icon {
   width: 46px;
   height: 46px;
-  border-radius: 999px;
-  border: 1px solid var(--border-strong);
   display: grid;
   place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 48, 59, 0.12);
+  border: 1px solid rgba(255, 48, 59, 0.4);
+  color: var(--crimson);
+  flex: none;
+}
+
+.resume-btn__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.resume-btn__text {
+  min-width: 0;
+  display: grid;
+  gap: 0.15rem;
+  text-align: left;
+}
+
+.resume-btn__text b {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.resume-btn__text span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.resume-btn__action {
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
   color: var(--crimson);
   flex: none;
   transition:
     background var(--t-fast) var(--ease),
-    color var(--t-fast) var(--ease);
+    color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease);
 }
 
-.resume-row--ready:hover .resume-row__icon {
+.resume-btn__action svg {
+  width: 17px;
+  height: 17px;
+}
+
+.resume-btn:hover .resume-btn__action {
   background: var(--crimson);
+  border-color: var(--crimson);
   color: #fff;
-}
-
-.resume-row__icon svg {
-  width: 18px;
-  height: 18px;
-}
-
-.resume-row--missing > svg:last-child {
-  margin-left: auto;
-  color: var(--muted);
 }
 
 /* opportunities */

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
-import { LuRefreshCw, LuSend, LuTrash2, LuX } from 'react-icons/lu';
-import { SiGooglegemini } from 'react-icons/si';
+import { LuMessagesSquare, LuRefreshCw, LuSend, LuTrash2, LuX } from 'react-icons/lu';
 import { chatbot } from '../data/portfolio';
 import { ChatError, sendChat, type ChatTurn } from '../lib/chat';
 
@@ -136,14 +135,14 @@ export default function Chatbot() {
         aria-controls="chat-panel"
         style={open ? { display: 'none' } : undefined}
       >
-        <SiGooglegemini aria-hidden="true" />
+        <LuMessagesSquare aria-hidden="true" />
       </button>
 
       {open && (
         <div className="chat-panel" id="chat-panel" role="dialog" aria-label={chatbot.name}>
           <div className="chat-panel__head">
             <span className="chat-panel__head-icon" aria-hidden="true">
-              <SiGooglegemini />
+              <LuMessagesSquare />
             </span>
             <div className="chat-panel__title">
               <b>{chatbot.name}</b>
