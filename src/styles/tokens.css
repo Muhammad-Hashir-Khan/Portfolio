@@ -1,0 +1,56 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   OBSIDIAN × CRIMSON — design tokens
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Color system */
+  --bg: #08090b;
+  --bg-2: #111317;
+  --surface: #181a20;
+  --crimson: #ff303b;
+  --crimson-deep: #a70d19;
+  --white: #f4f4f5;
+  --muted: #9a9da5;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --crimson-dim: rgba(255, 48, 59, 0.14);
+  --crimson-glow: rgba(255, 48, 59, 0.32);
+
+  /* Typography */
+  --font-display: 'Sora Variable', 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+
+  /* Geometry */
+  --container: 1180px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 22px;
+  --nav-h: 74px;
+  --section-y: clamp(4.5rem, 9vw, 8rem);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 0.25s;
+  --t-med: 0.45s;
+  --t-slow: 0.8s;
+
+  /* Layers */
+  --z-nav: 90;
+  --z-overlay: 120;
+  --z-chat: 140;
+  --z-intro: 200;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

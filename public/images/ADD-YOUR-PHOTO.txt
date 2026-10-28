@@ -1,0 +1,17 @@
+HOW TO ADD YOUR PROFILE PHOTO
+==============================
+
+1. Save your professional portrait to this exact path:
+
+   public/images/profile.jpg
+
+   Recommended: portrait orientation (e.g. 1200 x 1500), subject centred,
+   ≥ 70% quality. The website automatically uses this file in the hero
+   section and in the About section — no code changes needed.
+
+2. Until the file exists, the site automatically shows a clean typographic
+   monogram placeholder (no broken image). So you can deploy first and add
+   the photo later; simply re-run `npm run build` afterwards.
+
+3. Optional: also create a 1200x630 crop named public/images/og-card.jpg
+   for social share previews, then update the og:image URL in index.html.

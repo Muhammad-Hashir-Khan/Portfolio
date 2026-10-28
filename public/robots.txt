@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: replace with your final domain after deploying
+Sitemap: https://mhk-portfolio.vercel.app/sitemap.xml

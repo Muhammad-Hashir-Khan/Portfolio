@@ -1,0 +1,37 @@
+{
+  "name": "mhk-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Portfolio of Muhammad Hashir Khan — AI Automation Developer",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "vite",
+    "dev:api": "node server.mjs",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b",
+    "start": "node server.mjs",
+    "preview": "node server.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.5",
+    "@fontsource-variable/sora": "^5.2.5",
+    "@fontsource/jetbrains-mono": "^5.2.5",
+    "@google/genai": "^1.0.0",
+    "dotenv": "^17.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}
