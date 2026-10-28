@@ -50,6 +50,27 @@ export const profile = {
   achievements: [] as string[],
 };
 
+// ── Resume slot ────────────────────────────────────────────────────────
+export const resume = {
+  label: 'Download Resume',
+  file: '/files/resume.pdf', // drop your PDF at public/files/resume.pdf
+  note: 'Formatted PDF version of my profile — upload it at public/files/resume.pdf and it becomes downloadable automatically.',
+};
+
+// ── Marquee strip (home) ───────────────────────────────────────────────
+export const marquee = [
+  'AI Automation',
+  'LLM Workflows',
+  'API Integration',
+  'Webhooks',
+  'React',
+  'TypeScript',
+  'Node.js',
+  'Gemini API',
+  'WordPress',
+  'SEO',
+];
+
 // ── Contact helpers ────────────────────────────────────────────────────
 export const socialLinks = [
   { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-hashir-khan-991b45436' },
@@ -60,7 +81,7 @@ export const socialLinks = [
 
 export type SocialId = (typeof socialLinks)[number]['id'];
 
-// ── Services (also drives the pricing section) ─────────────────────────
+// ── Services (also drives the pricing page) ────────────────────────────
 export interface Service {
   id: string;
   index: string;
@@ -231,7 +252,7 @@ export const projects: Project[] = [
       systems: 'React chat UI · Serverless function · Gemini API · Rate limiter · Vercel',
       validation:
         'Body size and type checks, history trimming, honest "not provided" answers for anything unknown, and a graceful offline fallback that points visitors to direct contact channels.',
-      outcome: 'Shipping live on this portfolio — the chat launcher is in the corner of this page.',
+      outcome: 'Shipping live on this portfolio — the assistant launcher is in the corner of every page.',
     },
   },
   {
@@ -255,7 +276,7 @@ export const projects: Project[] = [
       validation:
         'A confidence floor before auto-routing, duplicate detection, retry and back-off on provider errors, plus a full action log for audit.',
       outcome:
-        'Illustrative — an interactive version of this pattern runs in the Automation Demo section of this page, clearly labeled as a simulation.',
+        'Illustrative — the pattern is documented here as a case study and can be demonstrated live on request.',
     },
   },
   {
@@ -286,6 +307,7 @@ export const projects: Project[] = [
 
 // ── Skills (editable, honest) ──────────────────────────────────────────
 export interface SkillCategory {
+  id: string;
   title: string;
   items: string[];
   featured?: boolean;
@@ -293,11 +315,13 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
+    id: 'specialization',
     title: 'Primary specialization',
     featured: true,
     items: ['AI Automation Development', 'Intelligent workflow design', 'Automation architecture'],
   },
   {
+    id: 'automation',
     title: 'Automation & integration',
     items: [
       'API integrations',
@@ -308,14 +332,17 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
+    id: 'web',
     title: 'Web development',
     items: ['React & TypeScript', 'Responsive interfaces', 'REST & serverless backends', 'Modern CSS engineering', 'Vite tooling'],
   },
   {
+    id: 'ai',
     title: 'AI & APIs',
     items: ['Gemini API integration', 'LLM prompt engineering', 'Structured output handling', 'Chat experience design'],
   },
   {
+    id: 'additional',
     title: 'Additional skills',
     items: ['App development', 'WordPress development', 'SEO', 'Meta Ads', 'Content writing'],
   },
@@ -338,53 +365,6 @@ export const processStages: ProcessStage[] = [
   { index: '04', title: 'Test', text: 'Validate functionality, edge cases and failure behaviour — automations must fail safely.' },
   { index: '05', title: 'Deliver', text: 'Ship with documentation, a walkthrough, and everything agreed in scope.' },
   { index: '06', title: 'Improve', text: 'Monitor, tune and extend where the engagement includes ongoing improvements.' },
-];
-
-// ── Automation demo (illustrative simulation steps) ────────────────────
-export interface DemoStep {
-  id: string;
-  label: string;
-  status: string;
-  console: string[];
-}
-
-export const demoSteps: DemoStep[] = [
-  {
-    id: 'inquiry',
-    label: 'Incoming inquiry',
-    status: 'New request received',
-    console: ['POST /webhook/intake → 200 accepted', 'payload: { channel: "website", type: "project_request" }'],
-  },
-  {
-    id: 'validation',
-    label: 'Data validation',
-    status: 'Required fields OK',
-    console: ['schema.check(name, contact, request) → passed', 'duplicate.suppress → none found'],
-  },
-  {
-    id: 'ai-processing',
-    label: 'AI processing',
-    status: 'Structuring the message',
-    console: ['llm.parse → intent: BILLING_ESC · urgency: HIGH', 'response: 240 ms · tokens: 96'],
-  },
-  {
-    id: 'rules',
-    label: 'Business rules',
-    status: 'Routing decision made',
-    console: ['urgency = HIGH → priority queue', 'guardrails.allowed → route: crm + notify'],
-  },
-  {
-    id: 'apps',
-    label: 'Connected applications',
-    status: 'Syncing systems',
-    console: ['crm.upsert(contact) → 200 ok', 'notify.email(owner) → queued'],
-  },
-  {
-    id: 'action',
-    label: 'Action & notification',
-    status: 'Delivered',
-    console: ['workflow.status → COMPLETED', 'log.retention → 7 days · identifiers only'],
-  },
 ];
 
 // ── Professional opportunities ─────────────────────────────────────────

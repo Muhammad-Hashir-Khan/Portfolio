@@ -1,48 +1,50 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'motion/react';
 
 import IntroOverlay from './components/IntroOverlay';
 import Nav from './components/Nav';
-import Hero from './components/Hero';
-import ValueProp from './components/ValueProp';
-import Services from './components/Services';
-import Projects from './components/Projects';
-import Skills from './components/Skills';
-import Workflow from './components/Workflow';
-import Pricing from './components/Pricing';
-import AutomationDemo from './components/AutomationDemo';
-import About from './components/About';
-import Opportunity from './components/Opportunity';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
 
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ServicesPage from './pages/ServicesPage';
+import ProjectsPage from './pages/ProjectsPage';
+import SkillsPage from './pages/SkillsPage';
+import PricingPage from './pages/PricingPage';
+import ContactPage from './pages/ContactPage';
+
 export default function App() {
   const [booted, setBooted] = useState(false);
+  const location = useLocation();
+
+  // Route change: jump to top instantly (before the new page enters).
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+  }, [location.pathname]);
 
   return (
     <>
       {!booted && <IntroOverlay onDone={() => setBooted(true)} />}
+
       <Nav />
-      <main>
-        <Hero ready={booted} />
-        <ValueProp />
-        <Services />
-        <Projects />
-        <Skills />
-        <Workflow />
-        <Pricing />
-        <AutomationDemo />
-        <About />
-        <Opportunity />
-        <Contact />
-      </main>
+
+      <AnimatePresence mode="wait" initial={false}>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<HomePage ready={booted} />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/skills" element={<SkillsPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AnimatePresence>
+
       <Footer />
       <Chatbot />
     </>
   );
 }
-
-export const reduceMotion = (): boolean =>
-  typeof window !== 'undefined' &&
-  typeof window.matchMedia === 'function' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;

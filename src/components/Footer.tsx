@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { IconType } from 'react-icons';
 import { LuArrowUp, LuLinkedin, LuMail, LuMessageCircle } from 'react-icons/lu';
 import { SiFiverr, SiGithub, SiUpwork } from 'react-icons/si';
@@ -13,11 +14,12 @@ const BRAND_ICONS: Record<SocialId, IconType> = {
 };
 
 const FOOTER_LINKS = [
-  { id: 'about', label: 'About' },
-  { id: 'services', label: 'Services' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'pricing', label: 'Pricing' },
+  { to: '/about', label: 'About' },
+  { to: '/services', label: 'Services' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/skills', label: 'Skills' },
+  { to: '/pricing', label: 'Pricing' },
+  { to: '/contact', label: 'Contact' },
 ];
 
 export default function Footer() {
@@ -86,8 +88,8 @@ export default function Footer() {
               </ul>
               <ul>
                 {FOOTER_LINKS.map((link) => (
-                  <li key={link.id}>
-                    <a href={`#${link.id}`}>{link.label}</a>
+                  <li key={link.to}>
+                    <Link to={link.to}>{link.label}</Link>
                   </li>
                 ))}
               </ul>

@@ -6,19 +6,20 @@ A cinematic, production-ready portfolio in the **Obsidian × Crimson** identity 
 
 ## 1 · Features
 
+Multi-page site (React Router) with route transitions, a Motion (Framer Motion) animation system, and the secure server-side Gemini chatbot.
+
 | Area | What's included |
 | --- | --- |
-| Intro | Skippable masked-name reveal + crimson progress bar (auto-suppressed for reduced-motion users) |
-| Hero | Word-mask headline choreography, portrait composition, subtle scroll parallax, availability chip |
-| Problem | "Less repetitive work, more intelligent execution" editorial grid |
-| Services | Featured AI Automation panel + 7 editorial service rows with starting prices & WhatsApp CTAs |
-| Projects | 4 honestly-labeled technical demonstrations with schematic covers + full case-study modals |
-| Skills | Honest categories — no fake percentage bars |
-| Process | Six-stage Discover → Improve rail |
-| Pricing | Interactive service rail (buttons, swipe, keyboard) with animated price panel — WhatsApp CTA per service |
-| Automation demo | Play/pause/reset pipeline simulation, clearly labeled *illustrative* |
-| About / Opportunities / Contact | Verified facts only, 4 opportunity CTAs, NO contact form anywhere |
-| Chatbot | Gemini-powered assistant, fact-locked system prompt, rate limiting, retry, graceful offline fallback |
+| Routes | 7 pages: `/` Home · `/about` · `/services` · `/projects` · `/skills` · `/pricing` · `/contact` — animated page transitions, scroll restoration, catch-all redirect to home |
+| Intro | Skippable masked-name reveal + crimson progress bar (auto-suppressed for reduced-motion users); home hero choreography is gated on it |
+| Home | Line-mask hero, keyword marquee, editorial value rows, featured VIP project cards, horizontal capabilities slider, CTA band |
+| About | Editorial portrait + bio, capability index, six-stage working method |
+| Services | Eight service lines as editorial rows (no boxes) with starting prices + per-service WhatsApp CTAs |
+| Projects | 4 honestly-labeled technical demonstrations, VIP spotlight cards, full case-study modal (spring entrance, Esc/backdrop close) |
+| Skills | Tabbed capability matrix with `layoutId` sliding indicator and staggered panel reveals |
+| Pricing | Unboxed typographic price index — giant per-service starting numbers, expandable scope panels, honest disclaimer |
+| Contact | Giant click-to-compose email, channel tiles with cursor spotlight, adaptive **Download Resume** button, opportunity rows. No contact form anywhere |
+| Chatbot | Gemini-powered assistant (real Gemini mark), fact-locked system prompt, rate limiting, retry, graceful offline fallback |
 | SEO | Open Graph, canonical, JSON-LD Person, robots.txt, sitemap.xml, semantic headings |
 
 ## 2 · Quick start (local)
@@ -71,6 +72,8 @@ Implemented in `api/_lib/chat.mjs` (shared by the local server **and** the Verce
 Everything personal lives in **`src/data/portfolio.ts`**: name, bio, availability, services + prices, projects, skills, contact links, chatbot suggestions. The chatbot's fact file is **`api/_lib/facts.mjs`** — keep it in sync when you edit data.
 
 **Your photograph:** drop your portrait at `public/images/profile.jpg` (portrait ≥ 70% quality), then `npm run build`. Until then a typographic monogram placeholder shows automatically.
+
+**Your resume:** drop the PDF at `public/files/resume.pdf`. The Contact page checks for it automatically — present → the button downloads it; missing → the button reads "Resume coming soon" and points to email. No code changes needed (see `public/files/ADD-RESUME-HERE.txt`).
 
 ## 6 · Deployment (recommended: Vercel)
 
@@ -146,7 +149,8 @@ Not yet done: Lighthouse runs (not available in this environment) and visual bro
 ```
 mhk-portfolio/
 ├─ index.html              # SEO shell
-├─ public/                 # favicon, robots, sitemap, images/profile.jpg slot
+├─ vercel.json             # SPA rewrite (excludes /api/, /images/, /files/)
+├─ public/                 # favicon, robots, sitemap, images/profile.jpg + files/resume.pdf slots
 ├─ api/
 │  ├─ chat.js              # Vercel serverless function
 │  └─ _lib/                # shared handler + fact file (local + Vercel)
@@ -155,9 +159,10 @@ mhk-portfolio/
 ├─ server.mjs              # local static + API server
 ├─ src/
 │  ├─ data/portfolio.ts    # ← EDIT ALL CONTENT HERE
-│  ├─ lib/                 # links + chat client
+│  ├─ lib/                 # links + chat client + spotlight
 │  ├─ styles/              # tokens / base / layout / sections / chatbot
-│  └─ components/          # 16 components (Nav, Hero, Services, …, Chatbot)
+│  ├─ components/          # Nav, Page, PageHeader, Reveal, ProjectCard, Portrait, Marquee, Chatbot, …
+│  └─ pages/               # HomePage, AboutPage, ServicesPage, ProjectsPage, SkillsPage, PricingPage, ContactPage
 ├─ .env                    # local secrets (git-ignored)
 └─ .env.example            # placeholder template
 ```

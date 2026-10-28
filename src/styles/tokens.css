@@ -28,7 +28,7 @@
   --radius: 16px;
   --radius-lg: 22px;
   --nav-h: 74px;
-  --section-y: clamp(4.5rem, 9vw, 8rem);
+  --section-y: clamp(3.4rem, 6.5vw, 5.6rem);
 
   /* Motion */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);

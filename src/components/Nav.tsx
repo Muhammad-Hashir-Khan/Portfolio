@@ -1,21 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
-import { LuArrowUpRight, LuMenu, LuX } from 'react-icons/lu';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { LuMenu, LuX } from 'react-icons/lu';
 import { profile } from '../data/portfolio';
 
 const NAV_LINKS = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'services', label: 'Services' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'pricing', label: 'Pricing' },
-  { id: 'contact', label: 'Contact' },
+  { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
+  { to: '/services', label: 'Services' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/skills', label: 'Skills' },
+  { to: '/pricing', label: 'Pricing' },
+  { to: '/contact', label: 'Contact' },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState('home');
   const [open, setOpen] = useState(false);
+  const location = useLocation();
   const burgerRef = useRef<HTMLButtonElement | null>(null);
   const firstLinkRef = useRef<HTMLAnchorElement | null>(null);
 
@@ -26,25 +27,10 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // close the mobile menu on route change
   useEffect(() => {
-    const ids = NAV_LINKS.map((l) => l.id);
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    if (typeof IntersectionObserver === 'undefined' || sections.length === 0) return;
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        }
-      },
-      { rootMargin: '-38% 0px -56% 0px', threshold: 0 },
-    );
-    sections.forEach((sec) => io.observe(sec));
-    return () => io.disconnect();
-  }, []);
+    setOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -67,28 +53,23 @@ export default function Nav() {
     <>
       <header className={scrolled ? 'nav nav--scrolled' : 'nav'}>
         <div className="container nav__inner">
-          <a href="#home" className="nav__brand" aria-label={`${profile.name} — ${profile.title}, back to top`}>
+          <Link to="/" className="nav__brand" aria-label={`${profile.name} — ${profile.title}, home`}>
             <b>{profile.name}</b>
             <span>{profile.title}</span>
-          </a>
+          </Link>
 
           <nav className="nav__links" aria-label="Primary">
             {NAV_LINKS.map((link) => (
-              <a
-                key={link.id}
-                href={`#${link.id}`}
-                className="nav__link"
-                aria-current={active === link.id ? 'true' : undefined}
+              <NavLink
+                key={link.to}
+                to={link.to}
+                end={link.to === '/'}
+                className={({ isActive }) => (isActive ? 'nav__link nav__link--active' : 'nav__link')}
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
-
-          <a href="#contact" className="btn btn--primary nav__cta">
-            Let&rsquo;s Discuss an Opportunity
-            <LuArrowUpRight aria-hidden="true" />
-          </a>
 
           <button
             ref={burgerRef}
@@ -120,24 +101,25 @@ export default function Nav() {
         </button>
 
         {NAV_LINKS.map((link, i) => (
-          <a
-            key={link.id}
+          <NavLink
+            key={link.to}
+            to={link.to}
+            end={link.to === '/'}
             ref={i === 0 ? firstLinkRef : undefined}
-            href={`#${link.id}`}
-            className="mobile-menu__link"
+            className={({ isActive }) =>
+              isActive
+                ? 'mobile-menu__link mobile-menu__link--active'
+                : 'mobile-menu__link'
+            }
             style={{ transitionDelay: open ? `${0.06 + i * 0.05}s` : '0s' }}
             onClick={() => setOpen(false)}
           >
             <i>{String(i + 1).padStart(2, '0')}</i>
             {link.label}
-          </a>
+          </NavLink>
         ))}
 
         <div className="mobile-menu__foot">
-          <a href="#contact" className="btn btn--primary" onClick={() => setOpen(false)}>
-            Let&rsquo;s Discuss an Opportunity
-            <LuArrowUpRight aria-hidden="true" />
-          </a>
           <p className="mono-label" style={{ letterSpacing: '0.2em' }}>
             {profile.title}
           </p>

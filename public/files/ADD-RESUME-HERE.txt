@@ -1,0 +1,19 @@
+HOW TO ADD YOUR RESUME
+======================
+
+1. Save your resume PDF to this exact path, named exactly:
+
+   resume.pdf
+
+   i.e.  public/files/resume.pdf
+
+2. The "Download Resume" button on the Contact page checks for this file
+   automatically:
+   - File present  → the button downloads it directly.
+   - File missing  → the button shows "Resume coming soon — reach out directly".
+
+3. No code changes are needed. After adding the file, run `npm run build`
+   if you are testing the production build locally.
+
+Recommended: keep the PDF under 2 MB, name the document itself nicely
+(e.g. Muhammad-Hashir-Khan-Resume.pdf) — the download filename follows this file.
