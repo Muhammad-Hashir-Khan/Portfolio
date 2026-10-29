@@ -3,9 +3,9 @@ import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/reac
 import { profile } from '../data/portfolio';
 
 /**
- * Profile photograph in a 3D glass frame — cursor tilt, floating glass
- * orbs and a light sheen. If public/images/profile.jpg is missing, a
- * clean typographic placeholder is rendered instead (no broken image).
+ * Profile photograph in a 3D glass frame — cursor tilt and a light sheen.
+ * If public/images/profile.jpg is missing, a clean typographic placeholder
+ * is rendered instead (no broken image).
  */
 export default function Portrait() {
   const [missing, setMissing] = useState(false);
@@ -49,8 +49,6 @@ export default function Portrait() {
       onMouseMove={reduce ? undefined : onMove}
       onMouseLeave={reduce ? undefined : onLeave}
     >
-      <span className="glass-portrait__orb glass-portrait__orb--a" aria-hidden="true" />
-      <span className="glass-portrait__orb glass-portrait__orb--b" aria-hidden="true" />
       <img
         src={profile.portrait}
         alt={`Professional portrait of ${profile.name}`}
