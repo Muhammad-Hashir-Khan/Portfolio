@@ -4,7 +4,6 @@ import PageHeader from '../components/PageHeader';
 import Reveal from '../components/Reveal';
 import { services } from '../data/portfolio';
 import { waLink } from '../lib/links';
-import { spotlight } from '../lib/spotlight';
 
 export default function ServicesPage() {
   return (
@@ -70,27 +69,6 @@ export default function ServicesPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── How pricing works ── */}
-      <section className="section" aria-label="Pricing note">
-        <div className="container">
-          <Reveal>
-            <div className="note-band spot" onMouseMove={spotlight}>
-              <div className="note-band__lead">
-                <p className="mono-label">A note on pricing</p>
-                <p className="note-band__statement">
-                  Fixed, written scope — <span className="tx-crimson">before any work begins.</span>
-                </p>
-              </div>
-              <p className="note-band__body">
-                Each line shows a <b>starting price</b>. Real quotes depend on scope, integrations and
-                delivery requirements — after a short conversation, you get a fixed, written scope before
-                any work begins.
-              </p>
-            </div>
-          </Reveal>
         </div>
       </section>
     </Page>

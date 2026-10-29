@@ -103,11 +103,6 @@ export default function PricingPage() {
               );
             })}
           </div>
-
-          <Reveal className="pricing__disclaimer" delay={0.1}>
-            <p className="mono-label">How quotes work</p>
-            <p>{pricing.disclaimer}</p>
-          </Reveal>
         </div>
       </section>
     </Page>

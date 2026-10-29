@@ -3,8 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
 import Reveal from '../components/Reveal';
-import { skillCategories, skillsNote } from '../data/portfolio';
-import { spotlight } from '../lib/spotlight';
+import { skillCategories } from '../data/portfolio';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -90,23 +89,6 @@ export default function SkillsPage() {
               </motion.div>
             </AnimatePresence>
           </div>
-        </div>
-      </section>
-
-      {/* ── Honesty note ── */}
-      <section className="section" aria-label="A note on these skills">
-        <div className="container">
-          <Reveal>
-            <div className="note-band spot" onMouseMove={spotlight}>
-              <div className="note-band__lead">
-                <p className="mono-label">Why this list looks the way it does</p>
-                <p className="note-band__statement">
-                  Only what can be <span className="tx-crimson">demonstrated today.</span>
-                </p>
-              </div>
-              <p className="note-band__body">{skillsNote}</p>
-            </div>
-          </Reveal>
         </div>
       </section>
     </Page>

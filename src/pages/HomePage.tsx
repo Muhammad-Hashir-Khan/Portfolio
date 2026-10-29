@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
+import { type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import { LuArrowRight, LuArrowUpRight, LuCheck, LuDownload, LuMoveRight, LuX } from 'react-icons/lu';
+import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import { LuArrowRight, LuArrowUpRight, LuDownload } from 'react-icons/lu';
 import Page from '../components/Page';
 import Portrait from '../components/Portrait';
 import SectionHeading from '../components/SectionHeading';
@@ -11,7 +11,6 @@ import CoverflowSlider from '../components/CoverflowSlider';
 import { profile, resume, services, type Service } from '../data/portfolio';
 import { gmailCompose, waLink } from '../lib/links';
 import { useResumeAvailable } from '../lib/useResume';
-import { spotlight } from '../lib/spotlight';
 
 const LINE_EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -47,21 +46,6 @@ const BENEFITS = [
     text: 'Notifications, reports and routine business processes handled automatically in the background.',
   },
 ];
-
-const SHIFT = {
-  before: [
-    'Copy details between tools by hand',
-    'Re-type the same data at every step',
-    'Chase status updates in chat threads',
-    'Fix the same errors twice',
-  ],
-  after: [
-    'Captured automatically at entry',
-    'Validated before it enters a system',
-    'Routed by explainable rules',
-    'Logged, retried and traceable',
-  ],
-};
 
 export default function HomePage({ ready }: { ready: boolean }) {
   const reduce = useReducedMotion();
@@ -195,62 +179,6 @@ export default function HomePage({ ready }: { ready: boolean }) {
         </div>
       </section>
 
-      {/* ═══ THE SHIFT — manual vs automated ═══ */}
-      <section className="section" aria-label="What changes with automation">
-        <div className="container">
-          <SectionHeading
-            label="The shift"
-            title={
-              <>
-                From manual grind to <span className="tx-crimson">one quiet pipeline.</span>
-              </>
-            }
-            lead="The same process, before and after a proper build:"
-          />
-
-          <Reveal>
-            <div className="shift spot" onMouseMove={spotlight}>
-              <div className="shift__col">
-                <p className="mono-label shift__label">Before — manual</p>
-                <ul>
-                  {SHIFT.before.map((item) => (
-                    <li key={item}>
-                      <span className="shift__mark shift__mark--x" aria-hidden="true">
-                        <LuX />
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="shift__mid" aria-hidden="true">
-                <LuMoveRight />
-              </div>
-
-              <div className="shift__col shift__col--after">
-                <p className="mono-label shift__label shift__label--crimson">After — automated</p>
-                <ul>
-                  {SHIFT.after.map((item, i) => (
-                    <li key={item}>
-                      <span className="shift__mark shift__mark--check" aria-hidden="true">
-                        <LuCheck />
-                      </span>
-                      <span>{item}</span>
-                      <i className="shift__step mono-label">{String(i + 1).padStart(2, '0')}</i>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <p className="shift__note mono-label">Same process — fewer touches, traceable at every step.</p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ═══ CAPABILITIES — 3D COVERFLOW ═══ */}
       <CoverflowSlider
         items={services}
@@ -260,30 +188,10 @@ export default function HomePage({ ready }: { ready: boolean }) {
         ariaLabel="Services carousel"
       />
 
-      {/* ═══ CTA SLAB — centered editorial ═══ */}
-      <section className="cta-slab" aria-label="Next step">
-        <div className="container cta-slab__inner">
-          <Reveal className="cta-slab__text">
-            <p className="mono-label cta-slab__label" aria-hidden="true">
-              <i />
-              Next step
-              <i />
-            </p>
-            <h2 className="cta-slab__title">
-              Have a repetitive process?
-              <br />
-              <span className="tx-crimson">Let&rsquo;s automate it.</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12} className="cta-slab__action cta-slab__action--row">
-            <Link to="/contact" className="btn btn--primary">
-              Start a Conversation
-              <LuArrowRight aria-hidden="true" />
-            </Link>
-            <Link to="/services" className="btn btn--ghost">
-              View Services
-            </Link>
-          </Reveal>
+      {/* ═══ CTA — 3D GLASS PANEL ═══ */}
+      <section className="section cta-slab" aria-label="Next step">
+        <div className="container">
+          <GlassCta />
         </div>
       </section>
     </Page>
@@ -323,6 +231,61 @@ function HeroResumeButton() {
       Download Resume
       <LuArrowUpRight aria-hidden="true" />
     </a>
+  );
+}
+
+/* ── 3D glass CTA panel — cursor tilt + floating depth orbs ─────────── */
+
+function GlassCta() {
+  const reduce = useReducedMotion();
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const rotateX = useSpring(rx, { stiffness: 130, damping: 18 });
+  const rotateY = useSpring(ry, { stiffness: 130, damping: 18 });
+
+  const onMove = (e: ReactMouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    ry.set(((e.clientX - rect.left) / rect.width - 0.5) * 10);
+    rx.set(((e.clientY - rect.top) / rect.height - 0.5) * -8);
+  };
+
+  const onLeave = () => {
+    rx.set(0);
+    ry.set(0);
+  };
+
+  return (
+    <motion.div
+      className="glass-cta"
+      style={reduce ? undefined : { rotateX, rotateY, transformPerspective: 1100 }}
+      onMouseMove={reduce ? undefined : onMove}
+      onMouseLeave={reduce ? undefined : onLeave}
+    >
+      <span className="glass-cta__orb glass-cta__orb--a" aria-hidden="true" />
+      <span className="glass-cta__orb glass-cta__orb--b" aria-hidden="true" />
+
+      <div className="glass-cta__content">
+        <p className="mono-label cta-slab__label" aria-hidden="true">
+          <i />
+          Next step
+          <i />
+        </p>
+        <h2 className="cta-slab__title">
+          Have a repetitive process?
+          <br />
+          <span className="tx-crimson">Let&rsquo;s automate it.</span>
+        </h2>
+        <div className="cta-slab__action--row">
+          <Link to="/contact" className="btn btn--primary">
+            Start a Conversation
+            <LuArrowRight aria-hidden="true" />
+          </Link>
+          <Link to="/services" className="btn btn--ghost">
+            View Services
+          </Link>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
