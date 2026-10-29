@@ -149,6 +149,65 @@
   border-bottom-color: var(--glass-border);
 }
 
+/* ═══ WELCOME STRIP — running marquee above the nav ═══ */
+
+.welcome-strip {
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.welcome-strip__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  height: var(--strip-h);
+  will-change: transform;
+  animation: stripScroll 38s linear infinite;
+}
+
+.welcome-strip:hover .welcome-strip__track {
+  animation-play-state: paused;
+}
+
+.welcome-strip__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.6rem;
+  margin-right: 2.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.56);
+  white-space: nowrap;
+}
+
+.welcome-strip__item--lead {
+  color: var(--crimson);
+}
+
+.welcome-strip__item i {
+  width: 1px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  flex: none;
+}
+
+@keyframes stripScroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-strip__track {
+    animation: none;
+  }
+}
+
 .nav__inner {
   height: var(--nav-h);
   display: flex;
@@ -261,7 +320,7 @@
   -webkit-backdrop-filter: blur(18px);
   display: flex;
   flex-direction: column;
-  padding: calc(var(--nav-h) + 2.5rem) var(--gutter) 2.5rem;
+  padding: calc(var(--nav-h) + var(--strip-h) + 2.5rem) var(--gutter) 2.5rem;
   opacity: 0;
   visibility: hidden;
   transition:
@@ -347,7 +406,7 @@
 /* ═══ PAGE OPENING ═══ */
 
 .page-top {
-  padding-top: calc(var(--nav-h) + clamp(2.8rem, 7vw, 5rem));
+  padding-top: calc(var(--nav-h) + var(--strip-h) + clamp(2.8rem, 7vw, 5rem));
 }
 
 .page-header {
@@ -415,7 +474,7 @@
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding-block: calc(var(--nav-h) + 3.5rem) 4rem;
+  padding-block: calc(var(--nav-h) + var(--strip-h) + 3.5rem) 4rem;
   overflow: clip;
   scroll-margin-top: 0;
 }
@@ -664,7 +723,7 @@
 
   .hero {
     min-height: 0;
-    padding-top: calc(var(--nav-h) + 2.6rem);
+    padding-top: calc(var(--nav-h) + var(--strip-h) + 2.6rem);
   }
 }
 

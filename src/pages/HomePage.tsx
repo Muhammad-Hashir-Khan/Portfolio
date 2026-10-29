@@ -1,6 +1,6 @@
-import { type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { LuArrowRight, LuArrowUpRight, LuDownload } from 'react-icons/lu';
 import Page from '../components/Page';
 import Portrait from '../components/Portrait';
@@ -8,7 +8,6 @@ import SectionHeading from '../components/SectionHeading';
 import Reveal from '../components/Reveal';
 import Marquee from '../components/Marquee';
 import CoverflowSlider from '../components/CoverflowSlider';
-import ProjectCover from '../components/ProjectCover';
 import { profile, resume, services, type Service } from '../data/portfolio';
 import { gmailCompose, waLink } from '../lib/links';
 import { useResumeAvailable } from '../lib/useResume';
@@ -188,13 +187,6 @@ export default function HomePage({ ready }: { ready: boolean }) {
         heading={<SectionHeading label="Capabilities" title="What I bring to a build." />}
         ariaLabel="Services carousel"
       />
-
-      {/* ═══ CTA — OPEN EDITORIAL SPLIT ═══ */}
-      <section className="section cta-slab" aria-label="Next step">
-        <div className="container">
-          <CtaSplit />
-        </div>
-      </section>
     </Page>
   );
 }
@@ -232,66 +224,6 @@ function HeroResumeButton() {
       Download Resume
       <LuArrowUpRight aria-hidden="true" />
     </a>
-  );
-}
-
-/* ── CTA — open editorial split: text left, schematic right ─────────── */
-
-function CtaSplit() {
-  const reduce = useReducedMotion();
-  const rx = useMotionValue(0);
-  const ry = useMotionValue(0);
-  const rotateX = useSpring(rx, { stiffness: 150, damping: 20 });
-  const rotateY = useSpring(ry, { stiffness: 150, damping: 20 });
-
-  const onMove = (e: ReactMouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    ry.set(((e.clientX - rect.left) / rect.width - 0.5) * 7);
-    rx.set(((e.clientY - rect.top) / rect.height - 0.5) * -6);
-  };
-
-  const onLeave = () => {
-    rx.set(0);
-    ry.set(0);
-  };
-
-  return (
-    <div className="cta-split">
-      <div className="cta-split__text">
-        <p className="mono-label cta-slab__label" aria-hidden="true">
-          <i />
-          Next step
-          <i />
-        </p>
-        <h2 className="cta-slab__title">
-          Have a repetitive process?
-          <br />
-          <span className="tx-crimson">Let&rsquo;s automate it.</span>
-        </h2>
-        <div className="cta-slab__action--row">
-          <Link to="/contact" className="btn btn--primary">
-            Start a Conversation
-            <LuArrowRight aria-hidden="true" />
-          </Link>
-          <Link to="/services" className="btn btn--ghost">
-            View Services
-          </Link>
-        </div>
-      </div>
-
-      <motion.div
-        className="cta-split__visual"
-        style={reduce ? undefined : { rotateX, rotateY, transformPerspective: 900 }}
-        onMouseMove={reduce ? undefined : onMove}
-        onMouseLeave={reduce ? undefined : onLeave}
-        aria-hidden="true"
-      >
-        <div className="cta-split__frame">
-          <ProjectCover kind="pipeline" />
-        </div>
-        <p className="cta-split__caption mono-label">Fig. 01 — an automated pipeline</p>
-      </motion.div>
-    </div>
   );
 }
 

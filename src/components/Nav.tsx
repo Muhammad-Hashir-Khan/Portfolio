@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { LuMenu, LuX } from 'react-icons/lu';
 import { profile } from '../data/portfolio';
+import WelcomeStrip from './WelcomeStrip';
 
 const NAV_LINKS = [
   { to: '/', label: 'Home' },
@@ -52,6 +53,7 @@ export default function Nav() {
   return (
     <>
       <header className={scrolled ? 'nav nav--scrolled' : 'nav'}>
+        <WelcomeStrip />
         <div className="container nav__inner">
           <Link to="/" className="nav__brand" aria-label={`${profile.name} — ${profile.title}, home`}>
             <b>{profile.name}</b>
@@ -93,7 +95,7 @@ export default function Nav() {
       >
         <button
           className="nav__burger"
-          style={{ position: 'absolute', top: 'calc(var(--nav-h) / 2 - 22px)', right: 'var(--gutter)', display: 'inline-flex' }}
+          style={{ position: 'absolute', top: 'calc(var(--strip-h) + var(--nav-h) / 2 - 22px)', right: 'var(--gutter)', display: 'inline-flex' }}
           aria-label="Close menu"
           onClick={() => setOpen(false)}
         >

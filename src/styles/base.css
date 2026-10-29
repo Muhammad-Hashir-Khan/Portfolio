@@ -130,7 +130,7 @@ h4 {
 .section {
   position: relative;
   padding-block: var(--section-y);
-  scroll-margin-top: calc(var(--nav-h) + 20px);
+  scroll-margin-top: calc(var(--nav-h) + var(--strip-h) + 20px);
 }
 
 .section + .section::before,
