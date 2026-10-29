@@ -725,12 +725,117 @@
   pointer-events: none;
 }
 
+.glass-cta__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: clamp(1.6rem, 4vw, 3rem);
+  align-items: center;
+}
+
 .glass-cta__content {
   position: relative;
   display: grid;
-  justify-items: center;
+  justify-items: start;
   gap: 1.5rem;
   transform: translateZ(36px);
+}
+
+/* right visual — 3D icon composition */
+.glass-cta__visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  width: min(280px, 100%);
+  justify-self: center;
+  transform: translateZ(54px);
+}
+
+.glass-cta__ring {
+  position: absolute;
+  inset: 7%;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 48, 59, 0.38);
+  animation: ringSpin 26s linear infinite;
+}
+
+.glass-cta__ring--outer {
+  inset: 0;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.13);
+  animation: none;
+}
+
+@keyframes ringSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-cta__ring {
+    animation: none;
+  }
+}
+
+.glass-cta__glyph {
+  display: grid;
+  place-items: center;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.15), rgba(255, 48, 59, 0.16) 55%, rgba(255, 48, 59, 0.04));
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 18px 44px rgba(0, 0, 0, 0.4);
+}
+
+.glass-cta__glyph svg {
+  width: 42%;
+  height: 42%;
+  color: var(--crimson);
+  filter: drop-shadow(0 0 18px rgba(255, 48, 59, 0.45));
+}
+
+.glass-cta__mini {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--white);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+.glass-cta__mini svg {
+  width: 22px;
+  height: 22px;
+  color: var(--crimson);
+}
+
+.glass-cta__mini--a {
+  top: 3%;
+  right: 5%;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+
+.glass-cta__mini--b {
+  bottom: 5%;
+  left: 1%;
+  animation: orbFloat 9s ease-in-out 0.7s infinite;
+}
+
+.glass-cta__mini--c {
+  top: 46%;
+  right: -9%;
+  animation: orbFloat 10s ease-in-out 1.4s infinite;
 }
 
 /* floating depth orbs — parallax with the panel tilt */
@@ -811,9 +916,87 @@
 .cta-slab__action--row {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.9rem;
   flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .glass-cta__grid {
+    grid-template-columns: 1fr;
+    gap: 2.2rem;
+  }
+
+  .glass-cta__visual {
+    width: min(240px, 82%);
+  }
+}
+
+/* ═══ GLASS PORTRAIT — shared by home hero + about ═══ */
+
+.glass-portrait {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 4 / 5;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.glass-portrait__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--surface);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+.glass-portrait__sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.16), transparent 32%, transparent 68%, rgba(255, 48, 59, 0.08));
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.glass-portrait__orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glass-portrait__orb--a {
+  width: 88px;
+  height: 88px;
+  top: -30px;
+  right: -26px;
+  transform: translateZ(64px);
+  background: radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.3), rgba(255, 48, 59, 0.28) 46%, rgba(255, 48, 59, 0.05) 72%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 16px 34px rgba(0, 0, 0, 0.35);
+  animation: orbFloat 8s ease-in-out infinite;
+}
+
+.glass-portrait__orb--b {
+  width: 56px;
+  height: 56px;
+  bottom: -22px;
+  left: -18px;
+  transform: translateZ(44px);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.22), rgba(255, 48, 59, 0.18) 50%, rgba(255, 48, 59, 0.03) 76%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 12px 26px rgba(0, 0, 0, 0.32);
+  animation: orbFloat 10s ease-in-out 1s infinite;
 }
 
 
@@ -1410,6 +1593,34 @@
     height: 52px;
     right: -14px;
     bottom: -20px;
+  }
+
+  .glass-cta__mini {
+    width: 44px;
+    height: 44px;
+  }
+
+  .glass-cta__mini svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .glass-cta__mini--c {
+    right: 0;
+  }
+
+  .glass-portrait__orb--a {
+    width: 58px;
+    height: 58px;
+    top: -20px;
+    right: -12px;
+  }
+
+  .glass-portrait__orb--b {
+    width: 40px;
+    height: 40px;
+    bottom: -16px;
+    left: -10px;
   }
 
   .mono-label {

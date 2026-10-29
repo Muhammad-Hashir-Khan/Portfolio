@@ -1,7 +1,7 @@
 import { type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { LuArrowRight, LuArrowUpRight, LuDownload } from 'react-icons/lu';
+import { LuArrowRight, LuArrowUpRight, LuBot, LuDownload, LuWebhook, LuWorkflow, LuZap } from 'react-icons/lu';
 import Page from '../components/Page';
 import Portrait from '../components/Portrait';
 import SectionHeading from '../components/SectionHeading';
@@ -234,7 +234,7 @@ function HeroResumeButton() {
   );
 }
 
-/* ── 3D glass CTA panel — cursor tilt + floating depth orbs ─────────── */
+/* ── 3D glass CTA panel — text left, icon visual right ──────────────── */
 
 function GlassCta() {
   const reduce = useReducedMotion();
@@ -264,25 +264,44 @@ function GlassCta() {
       <span className="glass-cta__orb glass-cta__orb--a" aria-hidden="true" />
       <span className="glass-cta__orb glass-cta__orb--b" aria-hidden="true" />
 
-      <div className="glass-cta__content">
-        <p className="mono-label cta-slab__label" aria-hidden="true">
-          <i />
-          Next step
-          <i />
-        </p>
-        <h2 className="cta-slab__title">
-          Have a repetitive process?
-          <br />
-          <span className="tx-crimson">Let&rsquo;s automate it.</span>
-        </h2>
-        <div className="cta-slab__action--row">
-          <Link to="/contact" className="btn btn--primary">
-            Start a Conversation
-            <LuArrowRight aria-hidden="true" />
-          </Link>
-          <Link to="/services" className="btn btn--ghost">
-            View Services
-          </Link>
+      <div className="glass-cta__grid">
+        <div className="glass-cta__content">
+          <p className="mono-label cta-slab__label" aria-hidden="true">
+            <i />
+            Next step
+            <i />
+          </p>
+          <h2 className="cta-slab__title">
+            Have a repetitive process?
+            <br />
+            <span className="tx-crimson">Let&rsquo;s automate it.</span>
+          </h2>
+          <div className="cta-slab__action--row">
+            <Link to="/contact" className="btn btn--primary">
+              Start a Conversation
+              <LuArrowRight aria-hidden="true" />
+            </Link>
+            <Link to="/services" className="btn btn--ghost">
+              View Services
+            </Link>
+          </div>
+        </div>
+
+        <div className="glass-cta__visual" aria-hidden="true">
+          <span className="glass-cta__ring glass-cta__ring--outer" />
+          <span className="glass-cta__ring" />
+          <span className="glass-cta__glyph">
+            <LuWorkflow />
+          </span>
+          <span className="glass-cta__mini glass-cta__mini--a">
+            <LuZap />
+          </span>
+          <span className="glass-cta__mini glass-cta__mini--b">
+            <LuWebhook />
+          </span>
+          <span className="glass-cta__mini glass-cta__mini--c">
+            <LuBot />
+          </span>
         </div>
       </div>
     </motion.div>
