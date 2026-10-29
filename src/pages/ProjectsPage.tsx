@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { LuArrowUpRight, LuX } from 'react-icons/lu';
+import { LuArrowUpRight, LuMessagesSquare, LuX } from 'react-icons/lu';
 import Page from '../components/Page';
 import PageHeader from '../components/PageHeader';
 import Reveal from '../components/Reveal';
-import ProjectCard from '../components/ProjectCard';
+import CoverflowSlider from '../components/CoverflowSlider';
 import ProjectCover from '../components/ProjectCover';
-import { projects, type Project } from '../data/portfolio';
+import { chatbot, projects, type Project } from '../data/portfolio';
+import { spotlight } from '../lib/spotlight';
 
 const BLOCKS: Array<{ key: keyof Project['details']; label: string }> = [
   { key: 'problem', label: 'The problem' },
@@ -15,6 +16,20 @@ const BLOCKS: Array<{ key: keyof Project['details']; label: string }> = [
   { key: 'systems', label: 'Systems involved' },
   { key: 'validation', label: 'Validation & safety' },
   { key: 'outcome', label: 'Status' },
+];
+
+/** The three documented case studies shown in the 3D carousel. */
+const SLIDER_PROJECTS = [projects[0], projects[2], projects[3]];
+
+/** Project 02 — this website's assistant, featured as the live proof. */
+const LIVE_PROJECT = projects[1];
+
+/** Assistant guarantees, distilled from the case-study details. */
+const PROOF_POINTS = [
+  'The API key never leaves the server.',
+  'Answers are limited to the verified fact file.',
+  'Per-IP rate limiting and history trimming keep usage sane.',
+  'A graceful offline fallback points to direct channels.',
 ];
 
 export default function ProjectsPage() {
@@ -40,6 +55,10 @@ export default function ProjectsPage() {
     };
   }, [active]);
 
+  const openAssistant = () => {
+    window.dispatchEvent(new Event('mhk:open-chat'));
+  };
+
   return (
     <Page className="projects-page">
       <div className="container page-top">
@@ -50,38 +69,74 @@ export default function ProjectsPage() {
         />
       </div>
 
-      {/* ── Project grid ── */}
-      <section className="section" aria-label="All projects">
-        <div className="container">
-          <div className="projects__grid">
-            {projects.map((project, i) => (
-              <Reveal key={project.id} delay={Math.min(i * 0.06, 0.2)}>
-                <ProjectCard
-                  project={project}
-                  action={
-                    <button className="project-card__open" onClick={() => setActive(project)}>
-                      Read case study
-                      <LuArrowUpRight aria-hidden="true" />
-                    </button>
-                  }
-                />
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── 3D case-study carousel ── */}
+      <CoverflowSlider
+        items={SLIDER_PROJECTS}
+        itemKey={(project) => project.id}
+        renderItem={(project) => <ProjectSlideBody project={project} onOpen={() => setActive(project)} />}
+        heading={
+          <Reveal className="section-head">
+            <div className="eyebrow" aria-hidden="true">
+              <span className="eyebrow__label">Case studies</span>
+              <span className="eyebrow__line" />
+            </div>
+            <h2 className="section-title">
+              Three builds, <span className="tx-crimson">in depth.</span>
+            </h2>
+            <p className="section-lead">
+              Rotate through the demonstrations — the active card opens its full case study.
+            </p>
+          </Reveal>
+        }
+        ariaLabel="Projects carousel"
+      />
 
-      {/* ── Live proof strip ── */}
+      {/* ── Live proof of work ── */}
       <section className="section" aria-label="Live demonstration">
         <div className="container">
-          <Reveal className="projects__live">
-            <div>
-              <p className="mono-label">Live demonstration</p>
-              <p className="projects__live-text">
-                The second case study isn&rsquo;t a write-up — it runs on this site. Open the assistant in the corner
-                and question it: it answers strictly from verified profile facts through a server-side, key-protected
-                endpoint.
-              </p>
+          <Reveal>
+            <div className="proof spot" onMouseMove={spotlight}>
+              <div className="proof__main">
+                <p className="mono-label proof__label">Live demonstration</p>
+                <h2 className="proof__title">{LIVE_PROJECT.title}</h2>
+                <p className="proof__text">
+                  The second case study isn&rsquo;t a write-up — it runs on this site. Open the assistant in
+                  the corner and question it: it answers strictly from verified profile facts through a
+                  server-side, key-protected endpoint.
+                </p>
+                <div className="proof__row">
+                  <button className="btn btn--primary" onClick={openAssistant}>
+                    Open the assistant
+                    <LuMessagesSquare aria-hidden="true" />
+                  </button>
+                  <button className="project-card__open" onClick={() => setActive(LIVE_PROJECT)}>
+                    Read case study
+                    <LuArrowUpRight aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="proof__side">
+                <div className="proof__console">
+                  <div className="proof__console-bar" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                    <span>assistant · live</span>
+                  </div>
+                  <ul className="proof__points">
+                    {PROOF_POINTS.map((point) => (
+                      <li key={point}>
+                        <span className="proof__tick" aria-hidden="true" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="proof__hint mono-label">
+                    Try: &ldquo;{chatbot.suggestions[2]}&rdquo;
+                  </p>
+                </div>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -151,5 +206,31 @@ export default function ProjectsPage() {
         )}
       </AnimatePresence>
     </Page>
+  );
+}
+
+/* ── card body inside the 3D carousel ───────────────────────────────── */
+
+function ProjectSlideBody({ project, onOpen }: { project: Project; onOpen: () => void }) {
+  return (
+    <>
+      <div className="cap-slide__cover" aria-hidden="true">
+        <ProjectCover kind={project.visual} />
+      </div>
+
+      <span className="mono-label">{project.category}</span>
+      <h3>{project.title}</h3>
+      <p>{project.summary}</p>
+
+      <div className="cap-card__foot">
+        <button className="slider__link" onClick={onOpen}>
+          Read case study
+          <LuArrowUpRight aria-hidden="true" />
+        </button>
+        <span className="cap-slide__index mono-label" aria-hidden="true">
+          {project.index}
+        </span>
+      </div>
+    </>
   );
 }

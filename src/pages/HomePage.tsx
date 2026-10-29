@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react';
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { LuArrowRight, LuArrowUpRight, LuPause, LuPlay } from 'react-icons/lu';
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { LuArrowRight, LuArrowUpRight, LuCheck, LuDownload, LuMoveRight, LuX } from 'react-icons/lu';
 import Page from '../components/Page';
 import Portrait from '../components/Portrait';
 import SectionHeading from '../components/SectionHeading';
 import Reveal from '../components/Reveal';
 import Marquee from '../components/Marquee';
-import ProjectCard from '../components/ProjectCard';
-import { profile, projects, services, type Service } from '../data/portfolio';
-import { waLink } from '../lib/links';
+import CoverflowSlider from '../components/CoverflowSlider';
+import { profile, resume, services, type Service } from '../data/portfolio';
+import { gmailCompose, waLink } from '../lib/links';
+import { useResumeAvailable } from '../lib/useResume';
+import { spotlight } from '../lib/spotlight';
 
 const LINE_EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -45,6 +47,21 @@ const BENEFITS = [
     text: 'Notifications, reports and routine business processes handled automatically in the background.',
   },
 ];
+
+const SHIFT = {
+  before: [
+    'Copy details between tools by hand',
+    'Re-type the same data at every step',
+    'Chase status updates in chat threads',
+    'Fix the same errors twice',
+  ],
+  after: [
+    'Captured automatically at entry',
+    'Validated before it enters a system',
+    'Routed by explainable rules',
+    'Logged, retried and traceable',
+  ],
+};
 
 export default function HomePage({ ready }: { ready: boolean }) {
   const reduce = useReducedMotion();
@@ -104,9 +121,7 @@ export default function HomePage({ ready }: { ready: boolean }) {
                 Explore My Work
                 <LuArrowRight aria-hidden="true" />
               </Link>
-              <Link to="/contact" className="btn btn--ghost">
-                Discuss an Opportunity
-              </Link>
+              <HeroResumeButton />
             </motion.div>
 
             <motion.div
@@ -180,55 +195,81 @@ export default function HomePage({ ready }: { ready: boolean }) {
         </div>
       </section>
 
-      {/* ═══ FEATURED WORK ═══ */}
-      <section className="section" aria-label="Featured work">
+      {/* ═══ THE SHIFT — manual vs automated ═══ */}
+      <section className="section" aria-label="What changes with automation">
         <div className="container">
-          <div className="section-split-head">
-            <SectionHeading label="Selected work" title="Technical demonstrations." />
-            <Reveal className="section-split-head__link">
-              <Link to="/projects" className="link-arrow">
-                All projects
-                <LuArrowUpRight aria-hidden="true" />
-              </Link>
-            </Reveal>
-          </div>
+          <SectionHeading
+            label="The shift"
+            title={
+              <>
+                From manual grind to <span className="tx-crimson">one quiet pipeline.</span>
+              </>
+            }
+            lead="The same process, before and after a proper build:"
+          />
 
-          <div className="projects__grid projects__grid--home">
-            <Reveal>
-              <ProjectCard
-                project={projects[0]}
-                action={
-                  <Link to="/projects" className="project-card__open">
-                    View case studies
-                    <LuArrowUpRight aria-hidden="true" />
-                  </Link>
-                }
-              />
-            </Reveal>
-            <Reveal delay={0.08}>
-              <ProjectCard
-                project={projects[1]}
-                action={
-                  <Link to="/projects" className="project-card__open">
-                    View case studies
-                    <LuArrowUpRight aria-hidden="true" />
-                  </Link>
-                }
-              />
-            </Reveal>
-          </div>
+          <Reveal>
+            <div className="shift spot" onMouseMove={spotlight}>
+              <div className="shift__col">
+                <p className="mono-label shift__label">Before — manual</p>
+                <ul>
+                  {SHIFT.before.map((item) => (
+                    <li key={item}>
+                      <span className="shift__mark shift__mark--x" aria-hidden="true">
+                        <LuX />
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="shift__mid" aria-hidden="true">
+                <LuMoveRight />
+              </div>
+
+              <div className="shift__col shift__col--after">
+                <p className="mono-label shift__label shift__label--crimson">After — automated</p>
+                <ul>
+                  {SHIFT.after.map((item, i) => (
+                    <li key={item}>
+                      <span className="shift__mark shift__mark--check" aria-hidden="true">
+                        <LuCheck />
+                      </span>
+                      <span>{item}</span>
+                      <i className="shift__step mono-label">{String(i + 1).padStart(2, '0')}</i>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <p className="shift__note mono-label">Same process — fewer touches, traceable at every step.</p>
+          </Reveal>
         </div>
       </section>
 
       {/* ═══ CAPABILITIES — 3D COVERFLOW ═══ */}
-      <CapabilitiesSlider />
+      <CoverflowSlider
+        items={services}
+        itemKey={(service) => service.id}
+        renderItem={(service) => <CapCardInner service={service} />}
+        heading={<SectionHeading label="Capabilities" title="What I bring to a build." />}
+        ariaLabel="Services carousel"
+      />
 
-      {/* ═══ CTA SLAB ═══ */}
+      {/* ═══ CTA SLAB — centered editorial ═══ */}
       <section className="cta-slab" aria-label="Next step">
         <div className="container cta-slab__inner">
           <Reveal className="cta-slab__text">
-            <p className="mono-label">Next step</p>
-            <h2>
+            <p className="mono-label cta-slab__label" aria-hidden="true">
+              <i />
+              Next step
+              <i />
+            </p>
+            <h2 className="cta-slab__title">
               Have a repetitive process?
               <br />
               <span className="tx-crimson">Let&rsquo;s automate it.</span>
@@ -249,136 +290,45 @@ export default function HomePage({ ready }: { ready: boolean }) {
   );
 }
 
-/* ── 3D coverflow capabilities carousel ─────────────────────────────── */
+/* ── hero resume button — always visible, adapts to the PDF ─────────── */
 
-function CapabilitiesSlider() {
-  const reduce = useReducedMotion();
-  const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  const hoverRef = useRef(false);
-  const stageRef = useRef<HTMLDivElement | null>(null);
-  const tiltX = useMotionValue(0);
-  const stageTilt = useSpring(tiltX, { stiffness: 140, damping: 20 });
-  const n = services.length;
+function HeroResumeButton() {
+  const state = useResumeAvailable();
 
-  // auto-advance — paused on hover, or via the stop button
-  useEffect(() => {
-    if (!playing || reduce) return;
-    const id = window.setInterval(() => {
-      if (!hoverRef.current) setActive((a) => (a + 1) % n);
-    }, 3600);
-    return () => window.clearInterval(id);
-  }, [playing, reduce, n]);
-
-  // shortest signed distance from the active card
-  const offsetOf = (i: number) => {
-    let r = (i - active) % n;
-    if (r > n / 2) r -= n;
-    if (r < -n / 2) r += n;
-    return r;
-  };
-
-  const onStageMove = (e: ReactMouseEvent) => {
-    const el = stageRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    tiltX.set(((e.clientY - rect.top) / rect.height - 0.5) * -9);
-  };
-
-  // reduced motion: quiet static grid
-  if (reduce) {
+  if (state === 'ready') {
     return (
-      <section className="section slider-section" aria-label="Capabilities">
-        <div className="container">
-          <SectionHeading label="Capabilities" title="What I bring to a build." />
-        </div>
-        <div className="container cap-static">
-          {services.map((service) => (
-            <CapCard key={service.id} service={service} />
-          ))}
-        </div>
-      </section>
+      <a className="btn btn--ghost" href={resume.file} download>
+        Download Resume
+        <LuDownload aria-hidden="true" />
+      </a>
+    );
+  }
+
+  if (state === 'checking') {
+    return (
+      <button className="btn btn--ghost" disabled>
+        Download Resume
+      </button>
     );
   }
 
   return (
-    <section className="section slider-section" aria-label="Capabilities">
-      <div className="container">
-        <div className="section-split-head">
-          <SectionHeading label="Capabilities" title="What I bring to a build." />
-          <Reveal className="section-split-head__link">
-            <div className="cap-controls">
-              <span className="cap-controls__count mono-label" aria-live="polite">
-                {String(active + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
-              </span>
-              <button
-                className="icon-btn"
-                onClick={() => setActive((a) => (a - 1 + n) % n)}
-                aria-label="Previous service"
-              >
-                <LuArrowRight style={{ transform: 'rotate(180deg)' }} aria-hidden="true" />
-              </button>
-              <button className="icon-btn" onClick={() => setActive((a) => (a + 1) % n)} aria-label="Next service">
-                <LuArrowRight aria-hidden="true" />
-              </button>
-              <button
-                className={playing ? 'icon-btn' : 'icon-btn cap-play--paused'}
-                onClick={() => setPlaying((p) => !p)}
-                aria-label={playing ? 'Pause auto-slide' : 'Resume auto-slide'}
-              >
-                {playing ? <LuPause aria-hidden="true" /> : <LuPlay aria-hidden="true" />}
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-
-      <div
-        className="cap-stage"
-        ref={stageRef}
-        onMouseMove={onStageMove}
-        onMouseEnter={() => (hoverRef.current = true)}
-        onMouseLeave={() => {
-          hoverRef.current = false;
-          tiltX.set(0);
-        }}
-        role="region"
-        aria-label="Services carousel — auto-advancing, hover to pause"
-      >
-        <motion.div className="cap-stage__tilt" style={{ rotateX: stageTilt }}>
-          {services.map((service, i) => {
-            const r = offsetOf(i);
-            const abs = Math.abs(r);
-            const isActive = r === 0;
-            return (
-              <motion.article
-                key={service.id}
-                className="cap-card cap-card3d"
-                initial={false}
-                animate={{
-                  x: r * 245,
-                  scale: 1 - Math.min(abs, 2) * 0.09,
-                  rotateY: r * -30,
-                  opacity: abs > 2 ? 0 : 1 - abs * 0.24,
-                  filter: isActive ? 'blur(0px) brightness(1)' : 'blur(1.6px) brightness(0.55)',
-                }}
-                transition={{ type: 'spring', stiffness: 230, damping: 27 }}
-                style={{ zIndex: 20 - abs, pointerEvents: abs > 2 ? 'none' : undefined }}
-                onClick={() => !isActive && setActive(i)}
-                inert={!isActive || undefined}
-                aria-hidden={!isActive || undefined}
-              >
-                <CapCardInner service={service} />
-              </motion.article>
-            );
-          })}
-        </motion.div>
-      </div>
-    </section>
+    <a
+      className="btn btn--ghost"
+      href={gmailCompose('Resume request — Muhammad Hashir Khan', 'Hello Hashir,\n\nCould you send me your latest resume?\n\n')}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Download Resume — PDF is being updated, this opens an email request instead"
+    >
+      Download Resume
+      <LuArrowUpRight aria-hidden="true" />
+    </a>
   );
 }
 
-function CapCardInner({ service }: { service: Service }) {
+/* ── capabilities card inner (shared by coverflow + static grid) ────── */
+
+function CapCardInner({ service }: { service: Service }): ReactNode {
   return (
     <>
       <span className="mono-label">Service {service.index}</span>
@@ -400,13 +350,5 @@ function CapCardInner({ service }: { service: Service }) {
         </a>
       </div>
     </>
-  );
-}
-
-function CapCard({ service }: { service: Service }) {
-  return (
-    <article className="cap-card">
-      <CapCardInner service={service} />
-    </article>
   );
 }

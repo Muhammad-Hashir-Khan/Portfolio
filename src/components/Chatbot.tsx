@@ -56,6 +56,14 @@ export default function Chatbot() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [msgs, open, pending]);
 
+  /* ── external open requests (e.g. the projects "proof of work" strip) ── */
+
+  useEffect(() => {
+    const onOpenRequest = () => setOpen(true);
+    window.addEventListener('mhk:open-chat', onOpenRequest);
+    return () => window.removeEventListener('mhk:open-chat', onOpenRequest);
+  }, []);
+
   /* ── sending ────────────────────────────────────────────────────────── */
 
   const buildHistory = (source: Msg[]): ChatTurn[] =>
