@@ -16,13 +16,13 @@ const CHANNEL_ICONS: Record<SocialId, IconType> = {
   fiverr: SiFiverr,
 };
 
-export default function ContactPage({ ready = true }: { ready?: boolean }) {
+export default function ContactPage() {
   return (
     <Page className="contact-page">
       <div className="container page-top">
         <PageHeader
-          slit={{ text: 'CONTACT', subtitle: 'START A CONVERSATION' }}
-          ready={ready}
+          label="Contact"
+          lines={['Direct lines,', <>no <span className="tx-crimson">gatekeepers.</span></>]}
           lead="No forms, no waiting queues — every channel below goes straight to me. Pick whichever you prefer; email and WhatsApp get the fastest reply."
         />
       </div>

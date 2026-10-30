@@ -7,7 +7,7 @@ import { skillCategories } from '../data/portfolio';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-export default function SkillsPage({ ready = true }: { ready?: boolean }) {
+export default function SkillsPage() {
   const [activeId, setActiveId] = useState(skillCategories[0].id);
   const reduce = useReducedMotion();
 
@@ -17,8 +17,8 @@ export default function SkillsPage({ ready = true }: { ready?: boolean }) {
     <Page className="skills-page">
       <div className="container page-top">
         <PageHeader
-          slit={{ text: 'SKILLS', subtitle: 'TOOLS & STACK' }}
-          ready={ready}
+          label="Skills"
+          lines={['A stack built for', <>intelligent <span className="tx-crimson">operations.</span></>]}
           lead="Organized by what each group does inside a real project — specialization first, supporting engineering around it."
         />
       </div>

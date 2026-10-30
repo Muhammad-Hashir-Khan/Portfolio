@@ -1,132 +1,3 @@
-/* ═══ INTRO OVERLAY ═══ */
-
-.intro {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-intro);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.intro--leave {
-  animation: introWipe 0.65s var(--ease-out) forwards;
-}
-
-@keyframes introWipe {
-  from {
-    clip-path: inset(0 0 0 0);
-  }
-  to {
-    clip-path: inset(0 0 100% 0);
-  }
-}
-
-.intro__inner {
-  display: grid;
-  justify-items: center;
-  gap: 1.6rem;
-  width: min(560px, 86vw);
-}
-
-.intro__mark {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.42em;
-  color: var(--muted);
-  text-transform: uppercase;
-  animation: introFade 0.9s var(--ease-out) both;
-}
-
-.intro__name {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(1.5rem, 4.6vw, 2.6rem);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.15;
-}
-
-.intro__name .word {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-}
-
-.intro__name .word span {
-  display: inline-block;
-  transform: translateY(110%);
-  animation: introWord 0.75s var(--ease-out) forwards;
-}
-
-@keyframes introWord {
-  to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes introFade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.intro__bar {
-  width: 220px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.intro__bar i {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: var(--crimson);
-  animation: introBar 1.15s var(--ease) 0.25s forwards;
-}
-
-@keyframes introBar {
-  to {
-    width: 100%;
-  }
-}
-
-.intro__skip {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.3em;
-  color: var(--muted);
-  text-transform: uppercase;
-  opacity: 0;
-  animation: introFade 0.6s var(--ease-out) 0.9s forwards;
-}
-
-.intro--leave .intro__inner {
-  animation: introDissolve 0.5s var(--ease-out) forwards;
-}
-
-@keyframes introDissolve {
-  to {
-    opacity: 0;
-    transform: translateY(-14px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .intro {
-    display: none;
-  }
-}
-
 /* ═══ NAVIGATION ═══ */
 
 .nav {
@@ -1125,65 +996,61 @@
   }
 }
 
-/* ═══ SLIT REVEAL — cinematic split heading ═══ */
+/* ═══ TRANSITION INTRO — blank veil + split word ═══ */
 
-.slit {
-  position: relative;
-  width: 100%;
-}
-
-/* scrub mode: 200vh run, sticky card, scrollbar drives the split */
-.slit--scrub {
-  height: 200vh;
-}
-
-.slit--center .slit__text {
-  text-align: center;
-}
-
-/* reduced-motion: plain stacked heading + subtitle */
-.slit--static {
-  display: grid;
-  gap: 1.6rem;
-}
-
-.slit--static .slit__subtitle--static {
-  justify-self: start;
-}
-
-.slit--center.slit--static .slit__subtitle--static {
-  justify-self: center;
-}
-
-.slit-pin__sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
+.tintro {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-transition);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2.4rem;
-  padding: calc(var(--nav-h) + var(--strip-h) + 1.5rem) var(--gutter) 2rem;
+  background: var(--bg);
+  padding: 0 var(--gutter);
 }
 
-.slit__stage {
-  position: relative;
+.tintro__stage {
   display: grid;
   width: 100%;
 }
 
-.slit__stage > * {
+.tintro__stage > * {
   grid-area: 1 / 1;
 }
 
+.tintro .slit__text {
+  text-align: center;
+}
+
+/* reduced-motion fallback: whole word + subtitle, no cut */
+.tintro--static {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.tintro--static .slit__subtitle {
+  position: static;
+}
+
+/* the two clip halves of the word */
 .slit__layer {
   z-index: 2;
   will-change: transform;
   pointer-events: none;
 }
 
-/* ultra-condensed display face for all main page headings */
+.slit__layer--top {
+  /* 0.5px extra reach so the closed halves never show a rounding seam */
+  clip-path: inset(0 0 calc(50% - 0.5px) 0);
+}
+
+.slit__layer--bottom {
+  clip-path: inset(calc(50% - 0.5px) 0 0 0);
+}
+
+/* ultra-condensed display face for the transition words */
 .slit__text {
   display: block;
   font-family: 'Anton', 'Bebas Neue', 'Oswald', 'League Gothic Condensed', sans-serif;
@@ -1196,6 +1063,7 @@
   text-wrap: balance;
 }
 
+/* small subtitle uncovered in the gap */
 .slit__subtitle {
   z-index: 1;
   align-self: center;
@@ -1223,10 +1091,6 @@
 }
 
 @media (max-width: 640px) {
-  .slit-pin__sticky {
-    gap: 1.8rem;
-  }
-
   .slit__subtitle {
     gap: 0.7rem;
     font-size: 11px;

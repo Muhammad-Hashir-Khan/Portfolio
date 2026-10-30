@@ -5,13 +5,18 @@ import Reveal from '../components/Reveal';
 import { services } from '../data/portfolio';
 import { waLink } from '../lib/links';
 
-export default function ServicesPage({ ready = true }: { ready?: boolean }) {
+export default function ServicesPage() {
   return (
     <Page className="services">
       <div className="container page-top">
         <PageHeader
-          slit={{ text: 'SERVICES', subtitle: 'WHAT I BUILD' }}
-          ready={ready}
+          label="Services"
+          lines={
+            [
+              'Capabilities engineered',
+              <>around your <span className="tx-crimson">operations.</span></>,
+            ]
+          }
           lead="Eight service lines, one mindset: systems that remove busywork and behave predictably. Every engagement starts from your actual process — not a template."
         />
       </div>

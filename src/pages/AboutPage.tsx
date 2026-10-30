@@ -5,13 +5,13 @@ import Reveal from '../components/Reveal';
 import Portrait from '../components/Portrait';
 import { profile, processStages } from '../data/portfolio';
 
-export default function AboutPage({ ready = true }: { ready?: boolean }) {
+export default function AboutPage() {
   return (
     <Page className="about">
       <div className="container page-top">
         <PageHeader
-          slit={{ text: 'ABOUT', subtitle: 'AI AUTOMATION SPECIALIST' }}
-          ready={ready}
+          label="About"
+          lines={['The developer', 'behind the systems.']}
           lead={
             <>
               I&rsquo;m Muhammad Hashir Khan — an <span className="tx-crimson">AI Automation Developer</span> focused on

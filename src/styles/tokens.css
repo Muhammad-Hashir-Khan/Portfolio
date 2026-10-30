@@ -42,7 +42,7 @@
   --z-nav: 90;
   --z-overlay: 120;
   --z-chat: 140;
-  --z-intro: 200;
+  --z-transition: 300;
 
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.055);
