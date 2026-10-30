@@ -24,9 +24,10 @@ const EASE_IN_OUT: [number, number, number, number] = [0.65, 0, 0.35, 1];
  * screen appears carrying only the next page's word. The word then tears
  * once, slowly and simultaneously: the top half travels UP and the bottom
  * half travels DOWN the exact same distance, opening a gap in the middle.
- * A small red subtitle fades in inside that gap, holds, and fades back
- * out; then the halves rejoin into the whole word — and only after that
- * does the veil dissolve and the real page open underneath. Every element
+ * A small red subtitle fades in inside that gap and holds; then the
+ * halves rejoin into the whole word exactly while the subtitle fades
+ * out — one synchronized closing move — and only after that does the
+ * veil dissolve and the real page open underneath. Every element
  * completes a true open-and-close cycle, and the whole thing plays
  * exactly once per navigation.
  */
@@ -103,21 +104,14 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
         await holdR.done;
         if (!alive) return;
 
-        const subOutR = animate(subOpacity, 0, { duration: 0.3 });
-        stops.push(subOutR.stop);
-        await subOutR;
-        if (!alive) return;
-
-        const breatheR = wait(250);
-        stops.push(breatheR.cancel);
-        await breatheR.done;
-        if (!alive) return;
-
         revealRef.current();
 
+        // no split in reduced motion — the closing move is the veil
+        // lift, and the subtitle hides together with it
+        const subOutR = animate(subOpacity, 0, { duration: 0.5, ease: 'easeIn' });
         const liftR = animate(opacity, 0, { duration: 0.5, ease: 'easeIn' });
-        stops.push(liftR.stop);
-        await liftR;
+        stops.push(subOutR.stop, liftR.stop);
+        await Promise.all([subOutR, liftR]);
         if (!alive) return;
 
         doneRef.current();
@@ -155,24 +149,20 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
       await hold.done;
       if (!alive) return;
 
-      // 6. the subtitle fades back out — its cycle closes
-      const subOut = animate(subOpacity, 0, { duration: 0.35, ease: 'easeIn' });
-      stops.push(subOut.stop);
-      await subOut;
-      if (!alive) return;
-
-      // 7. the gap closes — the halves rejoin into the whole word
+      // 6. one synchronized closing move — the gap closes while the
+      //    subtitle fades out: same duration, same easing
       const beat = wait(120);
       stops.push(beat.cancel);
       await beat.done;
       if (!alive) return;
 
       const close = animate(intro, 0, { duration: 0.8, ease: EASE_IN_OUT });
-      stops.push(close.stop);
-      await close;
+      const subOut = animate(subOpacity, 0, { duration: 0.8, ease: EASE_IN_OUT });
+      stops.push(close.stop, subOut.stop);
+      await Promise.all([close, subOut]);
       if (!alive) return;
 
-      // 8. a moment with the whole word formed again
+      // 7. a moment with the whole word formed again
       const settle = wait(280);
       stops.push(settle.cancel);
       await settle.done;
