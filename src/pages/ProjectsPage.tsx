@@ -18,7 +18,11 @@ const BLOCKS: Array<{ key: keyof Project['details']; label: string }> = [
 ];
 
 /** The three documented case studies shown in the 3D carousel. */
-const SLIDER_PROJECTS = [projects[0], projects[2], projects[3]];
+/* the three case studies in the carousel — numbered sequentially 01/02/03
+   (the raw `projects` data indexes the full portfolio list, 01–04) */
+const SLIDER_PROJECTS: Project[] = [projects[0], projects[2], projects[3]].map(
+  (project, i) => ({ ...project, index: String(i + 1).padStart(2, '0') }),
+);
 
 export default function ProjectsPage() {
   const [active, setActive] = useState<Project | null>(null);

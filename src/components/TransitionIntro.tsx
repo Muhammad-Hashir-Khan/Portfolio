@@ -24,12 +24,13 @@ const EASE_IN_OUT: [number, number, number, number] = [0.65, 0, 0.35, 1];
  * screen appears carrying only the next page's word. The word then tears
  * once, slowly and simultaneously: the top half travels UP and the bottom
  * half travels DOWN the exact same distance, opening a gap in the middle.
- * A small red subtitle fades in inside that gap and holds; then the
- * halves rejoin into the whole word exactly while the subtitle fades
- * out — one synchronized closing move — and only after that does the
- * veil dissolve and the real page open underneath. Every element
- * completes a true open-and-close cycle, and the whole thing plays
- * exactly once per navigation.
+ * Hard cut: the word tears open (top half up, bottom half down) exactly
+ * while the subtitle fades in — one synchronized opening move — then it
+ * holds; the halves rejoin into the whole word exactly while the
+ * subtitle fades out — one synchronized closing move — and only after
+ * that does the veil dissolve and the real page open underneath. Every
+ * element completes a true open-and-close cycle, and the whole thing
+ * plays exactly once per navigation.
  */
 export default function TransitionIntro({ phrase, onReveal, onDone }: TransitionIntroProps) {
   const reduce = useReducedMotion();
@@ -89,14 +90,11 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
     const run = async () => {
       // reduced motion: same open/close cycle, no split, plain fades
       if (reduce) {
+        // the whole veil opens while the subtitle appears — together
         const coverR = animate(opacity, 1, { duration: 0.4 });
-        stops.push(coverR.stop);
-        await coverR;
-        if (!alive) return;
-
-        const subInR = animate(subOpacity, 1, { duration: 0.3 });
-        stops.push(subInR.stop);
-        await subInR;
+        const subInR = animate(subOpacity, 1, { duration: 0.4 });
+        stops.push(coverR.stop, subInR.stop);
+        await Promise.all([coverR, subInR]);
         if (!alive) return;
 
         const holdR = wait(400);
@@ -130,20 +128,15 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
       await word;
       if (!alive) return;
 
-      // 3. one slow ease-in-out tear — top half up, bottom half down,
-      //    a gap opens in the middle and stays open
+      // 3. one synchronized opening move — top half up, bottom half down
+      //    while the subtitle fades in: same duration, same easing
       const tear = animate(intro, 1, { duration: 0.85, ease: EASE_IN_OUT });
-      stops.push(tear.stop);
-      await tear;
+      const subIn = animate(subOpacity, 1, { duration: 0.85, ease: EASE_IN_OUT });
+      stops.push(tear.stop, subIn.stop);
+      await Promise.all([tear, subIn]);
       if (!alive) return;
 
-      // 4. the subtitle fades in, sitting in the open gap
-      const subIn = animate(subOpacity, 1, { duration: 0.35, ease: 'easeOut' });
-      stops.push(subIn.stop);
-      await subIn;
-      if (!alive) return;
-
-      // 5. it holds there for a beat
+      // 4. the subtitle holds there for a beat
       const hold = wait(450);
       stops.push(hold.cancel);
       await hold.done;
