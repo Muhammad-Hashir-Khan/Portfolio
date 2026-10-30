@@ -41,8 +41,13 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
   // the slices move in `em` — proportional to the rendered font size, no
   // box measurement. One shared value drives both, top negative / bottom
   // positive, so the two halves cannot desync into a one-way shift.
-  const topY = useTransform(intro, (v) => `${-0.62 * v}em`);
-  const bottomY = useTransform(intro, (v) => `${0.62 * v}em`);
+  // `fit` phrases keep the name's full 0.62em travel; the larger single-
+  // line words scale it by the ratio of their 12vw face to the name's
+  // 7.2vw face (0.62 × 7.2/12 ≈ 0.372em) so every route opens the same
+  // light, small gap the name animation has.
+  const openFrac = phrase.fit ? 0.62 : 0.372;
+  const topY = useTransform(intro, (v) => `${-openFrac * v}em`);
+  const bottomY = useTransform(intro, (v) => `${openFrac * v}em`);
 
   // the gap subtitle owns its own open/close cycle: 0 → 1 → 0
 
