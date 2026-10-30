@@ -20,7 +20,7 @@ const BLOCKS: Array<{ key: keyof Project['details']; label: string }> = [
 /** The three documented case studies shown in the 3D carousel. */
 const SLIDER_PROJECTS = [projects[0], projects[2], projects[3]];
 
-export default function ProjectsPage() {
+export default function ProjectsPage({ ready = true }: { ready?: boolean }) {
   const [active, setActive] = useState<Project | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
   const reduce = useReducedMotion();
@@ -47,8 +47,8 @@ export default function ProjectsPage() {
     <Page className="projects-page">
       <div className="container page-top">
         <PageHeader
-          label="Projects"
-          lines={['Work, documented', <>honestly<span className="tx-crimson">.</span></>]}
+          slit={{ text: 'PROJECTS', subtitle: 'SELECTED WORK 2024-2025' }}
+          ready={ready}
           lead="Every case study below is a clearly labeled technical demonstration — architecture, logic and safety design written out in full. No invented clients, no fabricated metrics."
         />
       </div>

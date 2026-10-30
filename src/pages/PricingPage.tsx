@@ -9,7 +9,7 @@ import { waLink } from '../lib/links';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-export default function PricingPage() {
+export default function PricingPage({ ready = true }: { ready?: boolean }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const reduce = useReducedMotion();
 
@@ -17,12 +17,12 @@ export default function PricingPage() {
     <Page className="pricing-page">
       <div className="container page-top">
         <PageHeader
-          label="Pricing"
-          lines={['Starting points,', <>not <span className="tx-crimson">ceilings.</span></>]}
+          slit={{ text: 'PRICING', subtitle: 'STARTING POINTS' }}
+          ready={ready}
           lead="No locked tiers, no packaged boxes — just a clear starting number per service line, and an exact quote once the scope is understood."
         />
 
-        <Reveal className="price-meta" delay={0.15}>
+        <Reveal className="price-meta" delay={1.9}>
           <span>{services.length} services</span>
           <i aria-hidden="true" />
           <span>{pricing.currency}</span>

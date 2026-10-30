@@ -33,12 +33,12 @@ export default function App() {
       <AnimatePresence mode="wait" initial={false}>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<HomePage ready={booted} />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/skills" element={<SkillsPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage ready={booted} />} />
+          <Route path="/services" element={<ServicesPage ready={booted} />} />
+          <Route path="/projects" element={<ProjectsPage ready={booted} />} />
+          <Route path="/skills" element={<SkillsPage ready={booted} />} />
+          <Route path="/pricing" element={<PricingPage ready={booted} />} />
+          <Route path="/contact" element={<ContactPage ready={booted} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>

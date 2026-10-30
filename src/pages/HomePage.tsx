@@ -1,6 +1,6 @@
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { LuArrowRight, LuArrowUpRight, LuDownload } from 'react-icons/lu';
 import Page from '../components/Page';
 import Portrait from '../components/Portrait';
@@ -8,11 +8,13 @@ import SectionHeading from '../components/SectionHeading';
 import Reveal from '../components/Reveal';
 import Marquee from '../components/Marquee';
 import CoverflowSlider from '../components/CoverflowSlider';
+import SlitReveal from '../components/SlitReveal';
 import { profile, resume, services, type Service } from '../data/portfolio';
 import { gmailCompose, waLink } from '../lib/links';
 import { useResumeAvailable } from '../lib/useResume';
 
 const LINE_EASE = [0.16, 1, 0.3, 1] as const;
+const VIEW = { once: true, amount: 0.3 } as const;
 
 const BENEFITS = [
   {
@@ -49,24 +51,51 @@ const BENEFITS = [
 
 export default function HomePage({ ready }: { ready: boolean }) {
   const reduce = useReducedMotion();
-  const { scrollY } = useScroll();
-  const portraitY = useTransform(scrollY, [0, 640], [0, -42]);
-  const portraitScale = useTransform(scrollY, [0, 640], [1, 1.035]);
-  const cueOpacity = useTransform(scrollY, [0, 260], [1, 0]);
-
-  const state = ready ? 'show' : 'hidden';
 
   return (
     <Page className="home">
-      {/* ═══ HERO ═══ */}
+      {/* ═══ TITLE CARD — pinned center-slit reveal ═══ */}
+      <SlitReveal
+        mode="scrub"
+        ready={ready}
+        align="center"
+        text="MUHAMMAD HASHIR KHAN"
+        subtitle="AI AUTOMATION ENGINEER"
+      >
+        <motion.div
+          className="hero__avail"
+          initial={reduce ? false : { opacity: 0, y: 14 }}
+          animate={reduce ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1, ease: LINE_EASE }}
+        >
+          <span className="pulse-dot" aria-hidden="true" />
+          <span>
+            <b>{profile.availability.status}</b> · {profile.availability.detail}
+          </span>
+        </motion.div>
+
+        <motion.div
+          className="hero__scroll"
+          aria-hidden="true"
+          initial={reduce ? false : { opacity: 0 }}
+          animate={reduce ? undefined : { opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.5 }}
+        >
+          <span />
+          <i>Scroll</i>
+        </motion.div>
+      </SlitReveal>
+
+      {/* ═══ HERO — statement + portrait ═══ */}
       <section className="hero" aria-label="Introduction">
         <div className="container hero__inner">
           <div className="hero__content">
-            <motion.h1
+            <motion.h2
               className="hero__title"
               initial="hidden"
-              animate={state}
-              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } } }}
+              whileInView="show"
+              viewport={VIEW}
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.09 } } }}
             >
               <span className="line-mask">
                 <motion.span className="line-inner" variants={{ hidden: { y: '112%' }, show: { y: 0, transition: { duration: 1.05, ease: LINE_EASE } } }}>
@@ -83,13 +112,14 @@ export default function HomePage({ ready }: { ready: boolean }) {
                   that do more with less.
                 </motion.span>
               </span>
-            </motion.h1>
+            </motion.h2>
 
             <motion.p
               className="hero__sub"
               initial={reduce ? false : { opacity: 0, y: 18 }}
-              animate={reduce ? undefined : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.55, ease: LINE_EASE }}
+              whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+              viewport={VIEW}
+              transition={{ duration: 0.8, delay: 0.15, ease: LINE_EASE }}
             >
               I&rsquo;m {profile.name}, an {profile.title} focused on intelligent workflows, practical AI
               integrations, and digital solutions that help businesses work smarter.
@@ -98,8 +128,9 @@ export default function HomePage({ ready }: { ready: boolean }) {
             <motion.div
               className="hero__cta-row"
               initial={reduce ? false : { opacity: 0, y: 18 }}
-              animate={reduce ? undefined : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.68, ease: LINE_EASE }}
+              whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+              viewport={VIEW}
+              transition={{ duration: 0.8, delay: 0.3, ease: LINE_EASE }}
             >
               <Link to="/projects" className="btn btn--primary">
                 Explore My Work
@@ -107,27 +138,15 @@ export default function HomePage({ ready }: { ready: boolean }) {
               </Link>
               <HeroResumeButton />
             </motion.div>
-
-            <motion.div
-              className="hero__avail"
-              initial={reduce ? false : { opacity: 0, y: 14 }}
-              animate={reduce ? undefined : { opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8, ease: LINE_EASE }}
-            >
-              <span className="pulse-dot" aria-hidden="true" />
-              <span>
-                <b>{profile.availability.status}</b> · {profile.availability.detail}
-              </span>
-            </motion.div>
           </div>
 
           <div className="hero__visual">
             <motion.div
               className="hero__portrait"
-              style={reduce ? undefined : { y: portraitY, scale: portraitScale }}
               initial={reduce ? false : { opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-              animate={reduce ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 1.1, delay: 0.5, ease: LINE_EASE }}
+              whileInView={reduce ? undefined : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              viewport={VIEW}
+              transition={{ duration: 1.1, ease: LINE_EASE }}
             >
               <Portrait />
             </motion.div>
@@ -135,19 +154,15 @@ export default function HomePage({ ready }: { ready: boolean }) {
             <motion.div
               className="hero__meta-card"
               initial={reduce ? false : { opacity: 0, x: -22 }}
-              animate={reduce ? undefined : { opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.85, ease: LINE_EASE }}
+              whileInView={reduce ? undefined : { opacity: 1, x: 0 }}
+              viewport={VIEW}
+              transition={{ duration: 0.9, delay: 0.3, ease: LINE_EASE }}
             >
               <span>{profile.title.toUpperCase()}</span>
               <b>{profile.name}</b>
             </motion.div>
           </div>
         </div>
-
-        <motion.div className="hero__scroll" style={reduce ? undefined : { opacity: cueOpacity }} aria-hidden="true">
-          <span />
-          <i>Scroll</i>
-        </motion.div>
       </section>
 
       <Marquee />

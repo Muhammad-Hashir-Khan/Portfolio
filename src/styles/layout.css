@@ -1124,3 +1124,111 @@
     right: 1rem;
   }
 }
+
+/* ═══ SLIT REVEAL — cinematic split heading ═══ */
+
+.slit {
+  position: relative;
+  width: 100%;
+}
+
+/* scrub mode: 200vh run, sticky card, scrollbar drives the split */
+.slit--scrub {
+  height: 200vh;
+}
+
+.slit--center .slit__text {
+  text-align: center;
+}
+
+/* reduced-motion: plain stacked heading + subtitle */
+.slit--static {
+  display: grid;
+  gap: 1.6rem;
+}
+
+.slit--static .slit__subtitle--static {
+  justify-self: start;
+}
+
+.slit--center.slit--static .slit__subtitle--static {
+  justify-self: center;
+}
+
+.slit-pin__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4rem;
+  padding: calc(var(--nav-h) + var(--strip-h) + 1.5rem) var(--gutter) 2rem;
+}
+
+.slit__stage {
+  position: relative;
+  display: grid;
+  width: 100%;
+}
+
+.slit__stage > * {
+  grid-area: 1 / 1;
+}
+
+.slit__layer {
+  z-index: 2;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ultra-condensed display face for all main page headings */
+.slit__text {
+  display: block;
+  font-family: 'Anton', 'Bebas Neue', 'Oswald', 'League Gothic Condensed', sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 12vw, 180px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+.slit__subtitle {
+  z-index: 1;
+  align-self: center;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 0.85vw, 13px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+}
+
+.slit__subtitle i {
+  width: clamp(30px, 7vw, 96px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+}
+
+.slit__subtitle i:last-child {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), transparent);
+}
+
+@media (max-width: 640px) {
+  .slit-pin__sticky {
+    gap: 1.8rem;
+  }
+
+  .slit__subtitle {
+    gap: 0.7rem;
+    font-size: 11px;
+  }
+}

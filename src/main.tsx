@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 // Fonts (self-hosted via Fontsource — reliable offline and no external requests)
+import '@fontsource/anton';
 import '@fontsource-variable/sora';
 import '@fontsource-variable/inter';
 import '@fontsource/jetbrains-mono/400.css';
