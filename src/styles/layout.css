@@ -1050,6 +1050,15 @@
   clip-path: inset(calc(50% - 0.5px) 0 0 0);
 }
 
+/* the duo: off-white above the cut, theme red below it */
+.slit__layer--top .slit__text {
+  color: var(--white);
+}
+
+.slit__layer--bottom .slit__text {
+  color: var(--crimson);
+}
+
 /* ultra-condensed display face for the transition words */
 .slit__text {
   display: block;
@@ -1063,7 +1072,7 @@
   text-wrap: balance;
 }
 
-/* small subtitle uncovered in the gap */
+/* small subtitle uncovered in the gap — theme red, riding the cut line */
 .slit__subtitle {
   z-index: 1;
   align-self: center;
@@ -1076,18 +1085,19 @@
   font-size: clamp(11px, 0.85vw, 13px);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--crimson);
   white-space: nowrap;
 }
 
 .slit__subtitle i {
   width: clamp(30px, 7vw, 96px);
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+  background: linear-gradient(90deg, transparent, var(--crimson));
+  opacity: 0.75;
 }
 
 .slit__subtitle i:last-child {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), transparent);
+  background: linear-gradient(90deg, var(--crimson), transparent);
 }
 
 @media (max-width: 640px) {

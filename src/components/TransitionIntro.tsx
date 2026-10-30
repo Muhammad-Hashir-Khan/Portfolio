@@ -17,15 +17,14 @@ type TransitionIntroProps = {
   onDone: () => void;
 };
 
-const OPEN_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const CLOSE_EASE: [number, number, number, number] = [0.7, 0, 0.3, 1];
+const EASE_IN_OUT: [number, number, number, number] = [0.65, 0, 0.35, 1];
 
 /**
  * Full-screen route transition. The current page disappears and a blank
- * screen appears carrying only the next page's word. The word fades in
- * whole, tears into two clipped halves (top -60% / bottom +60%) and
- * uncovers a small subtitle sitting in the gap, closes back, and the
- * veil lifts — only then does the real page open underneath.
+ * screen appears carrying only the next page's word. The word tears in
+ * half once, slowly (top -60% / bottom +60%), uncovering a small red
+ * subtitle that stays in the middle, then the whole veil dissolves and
+ * the real page opens underneath. Plays exactly once per navigation.
  */
 export default function TransitionIntro({ phrase, onReveal, onDone }: TransitionIntroProps) {
   const reduce = useReducedMotion();
@@ -34,11 +33,10 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
   const wordIn = useMotionValue(0);
   const intro = useMotionValue(0);
 
-  // half-cut mapping: whole → open → hold → closed
-  const split = useTransform(intro, [0, 0.35, 0.55, 0.8], [0, 1, 1, 0]);
-  const topY = useTransform(split, (v) => `${-60 * v}%`);
-  const bottomY = useTransform(split, (v) => `${60 * v}%`);
-  const subOpacity = useTransform(split, [0.15, 0.35, 0.65, 0.85], [0, 1, 1, 0]);
+  // one slow ease-in-out tear; the subtitle rides in with it and stays open
+  const topY = useTransform(intro, (v) => `${-60 * v}%`);
+  const bottomY = useTransform(intro, (v) => `${60 * v}%`);
+  const subOpacity = useTransform(intro, [0.25, 0.55], [0, 1]);
 
   // callbacks go through refs so re-renders in App can't restart the timeline
   const revealRef = useRef(onReveal);
@@ -66,6 +64,14 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
     }, 7000);
     stops.push(() => window.clearTimeout(failsafe));
 
+    const wait = (ms: number) => {
+      let timer = 0;
+      const done = new Promise<void>((resolve) => {
+        timer = window.setTimeout(resolve, ms);
+      });
+      return { done, cancel: () => window.clearTimeout(timer) };
+    };
+
     const run = async () => {
       if (reduce) {
         stops.push(animate(opacity, 1, { duration: 0.4 }).stop);
@@ -85,31 +91,34 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
       }
 
       // 1. blank veil covers the screen
-      const cover = animate(opacity, 1, { duration: 0.3, ease: 'easeOut' });
+      const cover = animate(opacity, 1, { duration: 0.2, ease: 'easeOut' });
       stops.push(cover.stop);
       await cover;
       if (!alive) return;
 
       // 2. the word fades in, whole and centered
-      const word = animate(wordIn, 1, { duration: 0.45, ease: 'easeOut' });
+      const word = animate(wordIn, 1, { duration: 0.25, ease: 'easeOut' });
       stops.push(word.stop);
       await word;
       if (!alive) return;
 
-      // 3. half-cut reveal: tear open → hold the subtitle → close back
-      const tear = animate(intro, [0, 0.35, 0.55, 0.8, 0], {
-        duration: 2.3,
-        times: [0, 0.3, 0.5, 0.75, 1],
-        ease: [OPEN_EASE, 'linear', CLOSE_EASE, CLOSE_EASE],
-      });
+      // 3. one slow ease-in-out tear — the word stays open,
+      //    no closing bounce, exactly once
+      const tear = animate(intro, 1, { duration: 1.1, ease: EASE_IN_OUT });
       stops.push(tear.stop);
       await tear;
       if (!alive) return;
 
-      // 4. let the page content enter while the veil dissolves
+      // 4. the subtitle sits in the center for a moment
+      const hold = wait(450);
+      stops.push(hold.cancel);
+      await hold.done;
+      if (!alive) return;
+
+      // 5. the whole veil dissolves and the real page opens underneath
       revealRef.current();
 
-      const lift = animate(opacity, 0, { duration: 0.55, ease: 'easeIn' });
+      const lift = animate(opacity, 0, { duration: 0.5, ease: EASE_IN_OUT });
       stops.push(lift.stop);
       await lift;
       if (!alive) return;
