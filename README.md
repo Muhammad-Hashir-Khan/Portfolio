@@ -1,4 +1,4 @@
-# Muhammad Hashir Khan — AI Automation Developer · Portfolio
+# Muhammad Hashir Khan — AI Automation Engineer · Portfolio
 
 A cinematic, production-ready portfolio in the **Obsidian × Crimson** identity — React + TypeScript + Vite, with a **secure server-side Gemini chatbot** (the API key never reaches the browser).
 

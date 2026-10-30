@@ -1,6 +1,6 @@
 const LINES = [
   'Welcome to my Portfolio',
-  'AI Automation Developer',
+  'AI Automation Engineer',
   'Intelligent workflows, built to last',
   'Practical AI inside real operations',
   'Let\u2019s automate the repetitive',

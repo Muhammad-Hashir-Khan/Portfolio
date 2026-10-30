@@ -10,7 +10,7 @@ export const profile = {
   name: 'Muhammad Hashir Khan',
   shortName: 'M. Hashir Khan',
   initials: 'MHK',
-  title: 'AI Automation Developer',
+  title: 'AI Automation Engineer',
   email: 'muhammadhashirkhan.official@gmail.com',
   whatsapp: {
     display: '+92 312 2347665',
@@ -30,7 +30,7 @@ export const profile = {
 
   // ── About ────────────────────────────────────────────────────────────
   bio: [
-    'I’m Muhammad Hashir Khan, an AI Automation Developer. My work sits at the point where business processes meet AI: taking repetitive, rule-heavy operations and folding them into intelligent workflows that run with fewer manual touches.',
+    'I’m Muhammad Hashir Khan, an AI Automation Engineer. My work sits at the point where business processes meet AI: taking repetitive, rule-heavy operations and folding them into intelligent workflows that run with fewer manual touches.',
     'In practice that means designing automation logic around real operational needs — validating data before it enters a system, structuring AI output so downstream tools can trust it, wiring APIs and webhooks together, and making sure failures degrade safely instead of silently. Around that core I also build and improve websites, applications, WordPress sites, search visibility, campaigns and written content.',
     'I care about honest engineering: solutions that do what they claim, integrations that behave predictably, and work that a non-technical stakeholder can understand and trust.',
   ],
@@ -380,7 +380,7 @@ export const opportunities: Opportunity[] = [
     id: 'remote-roles',
     title: 'Remote roles',
     text: 'Distributed teams that need an engineer who thinks in systems, not just screens.',
-    waMessage: "Hello Hashir — I'd like to discuss a remote AI Automation Developer role.",
+    waMessage: "Hello Hashir — I'd like to discuss a remote AI Automation Engineer role.",
   },
   {
     id: 'permanent',

@@ -20,7 +20,7 @@ const PHRASES: Record<string, IntroPhrase> = {
   '/': { text: 'MUHAMMAD HASHIR KHAN', subtitle: 'AI AUTOMATION ENGINEER', fit: true },
   '/about': { text: 'ABOUT', subtitle: 'AI AUTOMATION SPECIALIST' },
   '/services': { text: 'SERVICES', subtitle: 'WHAT I BUILD' },
-  '/projects': { text: 'PROJECTS', subtitle: 'SELECTED WORK 2024-2025' },
+  '/projects': { text: 'PROJECTS', subtitle: 'SELECTED WORK' },
   '/skills': { text: 'SKILLS', subtitle: 'TOOLS & STACK' },
   '/pricing': { text: 'PRICING', subtitle: 'STARTING POINTS' },
   '/contact': { text: 'CONTACT', subtitle: 'START A CONVERSATION' },

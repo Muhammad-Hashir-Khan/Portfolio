@@ -11,10 +11,10 @@ export default function AboutPage() {
       <div className="container page-top">
         <PageHeader
           label="About"
-          lines={['The developer', 'behind the systems.']}
+          lines={['The engineer', 'behind the systems.']}
           lead={
             <>
-              I&rsquo;m Muhammad Hashir Khan — an <span className="tx-crimson">AI Automation Developer</span> focused on
+              I&rsquo;m Muhammad Hashir Khan — an <span className="tx-crimson">AI Automation Engineer</span> focused on
               turning repetitive, rule-heavy operations into intelligent workflows that businesses can trust.
             </>
           }
