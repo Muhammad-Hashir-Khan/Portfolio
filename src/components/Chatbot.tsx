@@ -70,9 +70,9 @@ export default function Chatbot() {
     source.filter((m) => !m.error).map((m) => ({ role: m.role, text: m.text }));
 
   const dispatch = useCallback(async (text: string, history: ChatTurn[]) => {
-    // soft client-side pace limit — the server enforces the real one
+    // minimal client-side pace guard (300ms) — server enforces the real one
     const now = Date.now();
-    const wait = Math.max(0, 1200 - (now - lastSentRef.current));
+    const wait = Math.max(0, 300 - (now - lastSentRef.current));
     if (wait > 0) await new Promise((r) => setTimeout(r, wait));
     lastSentRef.current = Date.now();
 

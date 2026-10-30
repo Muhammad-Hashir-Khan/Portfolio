@@ -69,14 +69,17 @@ async function callGemini({ message, history }) {
   const model = process.env.GEMINI_MODEL || 'gemini-flash-lite-latest';
   const ai = new GoogleGenAI({ apiKey });
 
+  // Latency notes: cap the output (most of the generation time is the
+  // reply length) and keep temperature low so answers stay on-topic
+  // instead of meandering into generic filler.
   const response = await ai.models.generateContent({
     model,
     contents: [...history, { role: 'user', parts: [{ text: message }] }],
     config: {
       systemInstruction: SYSTEM_PROMPT,
-      temperature: 0.6,
-      maxOutputTokens: 800,
-      abortSignal: AbortSignal.timeout(60_000),
+      temperature: 0.35,
+      maxOutputTokens: 300,
+      abortSignal: AbortSignal.timeout(45_000),
     },
   });
 
