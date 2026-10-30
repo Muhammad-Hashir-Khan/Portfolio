@@ -7,11 +7,11 @@ import {
   useTransform,
 } from 'motion/react';
 
-export type IntroPhrase = { text: string; subtitle: string };
+export type IntroPhrase = { text: string; subtitle: string; fit?: boolean };
 
 type TransitionIntroProps = {
   phrase: IntroPhrase;
-  /** fires the moment the word closes back whole — page content may enter */
+  /** fires the moment the veil is ready to open — page content may enter */
   onReveal: () => void;
   /** fires after the veil has fully lifted — safe to unmount */
   onDone: () => void;
@@ -21,10 +21,11 @@ const EASE_IN_OUT: [number, number, number, number] = [0.65, 0, 0.35, 1];
 
 /**
  * Full-screen route transition. The current page disappears and a blank
- * screen appears carrying only the next page's word. The word tears in
- * half once, slowly (top -60% / bottom +60%), uncovering a small red
- * subtitle that stays in the middle, then the whole veil dissolves and
- * the real page opens underneath. Plays exactly once per navigation.
+ * screen appears carrying only the next page's word. The word then tears
+ * once, slowly and simultaneously: the top half travels UP and the bottom
+ * half travels DOWN the exact same distance, opening a gap in the middle.
+ * A small red subtitle sits in that gap, holds, and then the whole veil
+ * dissolves and the real page opens underneath. Plays exactly once.
  */
 export default function TransitionIntro({ phrase, onReveal, onDone }: TransitionIntroProps) {
   const reduce = useReducedMotion();
@@ -33,9 +34,11 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
   const wordIn = useMotionValue(0);
   const intro = useMotionValue(0);
 
-  // one slow ease-in-out tear; the subtitle rides in with it and stays open
-  const topY = useTransform(intro, (v) => `${-60 * v}%`);
-  const bottomY = useTransform(intro, (v) => `${60 * v}%`);
+  // the slices move in `em` — proportional to the rendered font size, no
+  // box measurement. One shared value drives both, top negative / bottom
+  // positive, so the two halves cannot desync into a one-way shift.
+  const topY = useTransform(intro, (v) => `${-0.62 * v}em`);
+  const bottomY = useTransform(intro, (v) => `${0.62 * v}em`);
   const subOpacity = useTransform(intro, [0.25, 0.55], [0, 1]);
 
   // callbacks go through refs so re-renders in App can't restart the timeline
@@ -136,11 +139,13 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduce, phrase]);
 
+  const textClass = `slit__text${phrase.fit ? ' slit__text--fit' : ''}`;
+
   if (reduce) {
     return (
       <motion.div className="tintro tintro--static" style={{ opacity }}>
         <p className="sr-only">{phrase.text}</p>
-        <span className="slit__text" aria-hidden="true">
+        <span className={textClass} aria-hidden="true">
           {phrase.text}
         </span>
         <p className="slit__subtitle" aria-hidden="true">
@@ -156,12 +161,18 @@ export default function TransitionIntro({ phrase, onReveal, onDone }: Transition
     <motion.div className="tintro" style={{ opacity }}>
       <p className="sr-only">{phrase.text}</p>
       <div className="tintro__stage" aria-hidden="true">
-        <motion.div className="slit__layer slit__layer--top" style={{ opacity: wordIn, y: topY }}>
-          <span className="slit__text">{phrase.text}</span>
-        </motion.div>
-        <motion.div className="slit__layer slit__layer--bottom" style={{ opacity: wordIn, y: bottomY }}>
-          <span className="slit__text">{phrase.text}</span>
-        </motion.div>
+        <motion.span
+          className={`${textClass} slit__text--top`}
+          style={{ opacity: wordIn, y: topY }}
+        >
+          {phrase.text}
+        </motion.span>
+        <motion.span
+          className={`${textClass} slit__text--bot`}
+          style={{ opacity: wordIn, y: bottomY }}
+        >
+          {phrase.text}
+        </motion.span>
         <motion.p className="slit__subtitle" style={{ opacity: subOpacity }}>
           <i />
           <span>{phrase.subtitle}</span>

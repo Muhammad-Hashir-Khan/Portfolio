@@ -1007,6 +1007,7 @@
   justify-content: center;
   background: var(--bg);
   padding: 0 var(--gutter);
+  overflow: hidden;
 }
 
 .tintro__stage {
@@ -1014,12 +1015,45 @@
   width: 100%;
 }
 
+/* the two word slices and the subtitle all paint in one cell */
 .tintro__stage > * {
   grid-area: 1 / 1;
 }
 
-.tintro .slit__text {
+/* ultra-condensed display face for the transition words */
+.slit__text {
+  display: block;
+  z-index: 2;
+  pointer-events: none;
+  font-family: 'Anton', 'Bebas Neue', 'Oswald', 'League Gothic Condensed', sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 12vw, 180px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
   text-align: center;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+/* single-line fit for long phrases — the full name tears like one word */
+.slit__text--fit {
+  font-size: min(7.2vw, 128px);
+  text-wrap: nowrap;
+}
+
+/* word slices: the clip lives on the text element itself and the
+   transform moves that same element, so the slice always rides the move.
+   The top half travels up, the bottom half the exact opposite down. */
+.slit__text--top {
+  /* 0.5px overlap at the cut line kills any rounding seam */
+  clip-path: inset(0 0 calc(50% - 0.5px) 0);
+  color: var(--white);
+}
+
+.slit__text--bot {
+  clip-path: inset(calc(50% - 0.5px) 0 0 0);
+  color: var(--crimson);
 }
 
 /* reduced-motion fallback: whole word + subtitle, no cut */
@@ -1032,44 +1066,6 @@
 
 .tintro--static .slit__subtitle {
   position: static;
-}
-
-/* the two clip halves of the word */
-.slit__layer {
-  z-index: 2;
-  will-change: transform;
-  pointer-events: none;
-}
-
-.slit__layer--top {
-  /* 0.5px extra reach so the closed halves never show a rounding seam */
-  clip-path: inset(0 0 calc(50% - 0.5px) 0);
-}
-
-.slit__layer--bottom {
-  clip-path: inset(calc(50% - 0.5px) 0 0 0);
-}
-
-/* the duo: off-white above the cut, theme red below it */
-.slit__layer--top .slit__text {
-  color: var(--white);
-}
-
-.slit__layer--bottom .slit__text {
-  color: var(--crimson);
-}
-
-/* ultra-condensed display face for the transition words */
-.slit__text {
-  display: block;
-  font-family: 'Anton', 'Bebas Neue', 'Oswald', 'League Gothic Condensed', sans-serif;
-  font-weight: 400;
-  font-size: clamp(48px, 12vw, 180px);
-  line-height: 0.85;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--white);
-  text-wrap: balance;
 }
 
 /* small subtitle uncovered in the gap — theme red, riding the cut line */

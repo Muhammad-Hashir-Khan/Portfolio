@@ -17,7 +17,7 @@ import ContactPage from './pages/ContactPage';
 
 /** the word each route's transition veil tears open */
 const PHRASES: Record<string, IntroPhrase> = {
-  '/': { text: 'MUHAMMAD HASHIR KHAN', subtitle: 'AI AUTOMATION ENGINEER' },
+  '/': { text: 'MUHAMMAD HASHIR KHAN', subtitle: 'AI AUTOMATION ENGINEER', fit: true },
   '/about': { text: 'ABOUT', subtitle: 'AI AUTOMATION SPECIALIST' },
   '/services': { text: 'SERVICES', subtitle: 'WHAT I BUILD' },
   '/projects': { text: 'PROJECTS', subtitle: 'SELECTED WORK 2024-2025' },
