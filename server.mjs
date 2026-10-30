@@ -28,6 +28,7 @@ const MIME = {
   '.webp': 'image/webp',
   '.avif': 'image/avif',
   '.txt': 'text/plain; charset=utf-8',
+  '.pdf': 'application/pdf',
   '.xml': 'application/xml',
   '.ico': 'image/x-icon',
   '.map': 'application/json',
