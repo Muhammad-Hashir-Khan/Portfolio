@@ -73,7 +73,7 @@ export const marquee = [
 
 // ── Contact helpers ────────────────────────────────────────────────────
 export const socialLinks = [
-  { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-hashir-khan-991b45436' },
+  { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/muhammad-hashir-khan' },
   { id: 'github', label: 'GitHub', href: 'https://github.com/Muhammad-Hashir-Khan' },
   { id: 'upwork', label: 'Upwork', href: 'https://www.upwork.com/freelancers/~016c3591be4e9f68d4' },
   { id: 'fiverr', label: 'Fiverr', href: 'https://www.fiverr.com/mhashirkhan__' },

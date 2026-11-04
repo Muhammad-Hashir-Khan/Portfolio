@@ -91,7 +91,7 @@
     transform: translateY(-0.6mm);
   }
 
-  .cv-section__body { margin-top: 2.6mm; }
+  .cv-section__body { margin-top: 2.4mm; }
 
   /* summary */
   .cv-summary { color: #2c2c2c; }
@@ -121,7 +121,7 @@
     margin-top: 1.2mm;
   }
 
-  .cv-work { margin-top: 2.6mm; }
+  .cv-work { margin-top: 2.4mm; }
 
   .cv-job { margin-top: 2.2mm; }
   .cv-job:first-child { margin-top: 0; }
@@ -130,6 +130,7 @@
     display: flex;
     align-items: baseline;
     gap: 2.5mm;
+    flex-wrap: wrap;
   }
 
   .cv-job__title {
@@ -145,10 +146,10 @@
     color: #6d6d6d;
   }
 
-  .cv-job__text { margin-top: 0.9mm; color: #2e2e2e; }
+  .cv-job__text { margin-top: 0.8mm; color: #2e2e2e; }
 
   .cv-job__stack {
-    margin-top: 0.8mm;
+    margin-top: 0.7mm;
     font-size: 7.6pt;
     color: #5c5c5c;
     letter-spacing: 0.02em;
@@ -159,7 +160,7 @@
   .cv-process b { font-weight: 650; }
 
   /* availability footer */
-  .cv-foot { margin-top: 6mm; border-top: 0.6pt solid #2b2b2b; padding-top: 2.6mm; }
+  .cv-foot { margin-top: 5.4mm; border-top: 0.6pt solid #2b2b2b; padding-top: 2.4mm; }
 
   .cv-foot__row {
     display: flex;
@@ -185,53 +186,56 @@
     <h1 class="cv-name">Muhammad Hashir Khan</h1>
     <div class="cv-role">AI Automation Engineer</div>
     <div class="cv-contact">
-      muhammadhashirkhan.official@gmail.com<span class="sep">·</span>+92 312 2347665
+      <a href="mailto:muhammadhashirkhan.official@gmail.com">muhammadhashirkhan.official@gmail.com</a><span class="sep">·</span><a href="tel:+923122347665">+92 312 2347665</a>
       <span class="sep">·</span>Pakistan — Remote-friendly
     </div>
     <div class="cv-links">
-      linkedin.com/in/muhammad-hashir-khan-991b45436
-      <span class="sep">·</span> github.com/Muhammad-Hashir-Khan
-      <span class="sep">·</span> upwork.com/freelancers/~016c3591be4e9f68d4
-      <span class="sep">·</span> fiverr.com/mhashirkhan__
+      <a href="https://www.linkedin.com/in/muhammad-hashir-khan">linkedin.com/in/muhammad-hashir-khan</a>
+      <span class="sep">·</span> <a href="https://github.com/Muhammad-Hashir-Khan">github.com/Muhammad-Hashir-Khan</a>
+      <span class="sep">·</span> <a href="https://www.upwork.com/freelancers/~016c3591be4e9f68d4">upwork.com/freelancers/~016c3591be4e9f68d4</a>
+      <span class="sep">·</span> <a href="https://www.fiverr.com/mhashirkhan__">fiverr.com/mhashirkhan__</a>
     </div>
     <hr class="cv-rule" />
   </header>
 
-  <!-- ═══ PROFILE ═══ -->
+  <!-- ═══ SUMMARY ═══ -->
   <section class="cv-section">
-    <div class="cv-section__title">Profile</div>
+    <div class="cv-section__title">Summary</div>
     <div class="cv-section__body cv-summary">
-      AI Automation Engineer working at the point where business processes meet AI: repetitive,
-      rule-heavy operations folded into intelligent workflows that run with fewer manual touches.
-      Automation designed around real operational needs — data validated on entry, AI output
-      structured for downstream trust, APIs and webhooks wired together, and failures that
-      degrade safely instead of silently. Around that core: websites, applications,
-      WordPress builds, search visibility, campaigns and content.
+      AI Automation Engineer with 3+ years of professional experience building AI automation with
+      Python and TypeScript — folding repetitive, rule-heavy operations into intelligent workflows
+      that run with fewer manual touches. Automation designed around real operational needs: data
+      validated on entry, LLM output structured for downstream trust, APIs and webhooks wired
+      together, and failures that degrade safely instead of silently. Core tooling includes
+      FastAPI services, LangChain workflows, RAG pipelines and vector databases; around that core
+      — websites, applications, WordPress builds, search visibility, campaigns and content.
     </div>
   </section>
 
   <!-- ═══ SKILLS ═══ -->
   <section class="cv-section">
-    <div class="cv-section__title">Core Skills</div>
+    <div class="cv-section__title">Skills</div>
     <div class="cv-section__body cv-skills">
       <div class="cv-skill-group">
-        <h3>Primary specialization</h3>
-        <p>Intelligent workflow design · AI automation · automation architecture</p>
+        <h3>Python · AI &amp; APIs <span style="letter-spacing:0">— primary</span></h3>
+        <p>Python · FastAPI · LangChain · LangGraph · OpenAI API · RAG · vector databases
+        (Qdrant / Pinecone) · Gemini API · LLM prompt engineering · structured output
+        handling</p>
       </div>
       <div class="cv-skill-group">
-        <h3>Automation &amp; integration</h3>
-        <p>API integrations · webhooks &amp; event flows · validation &amp; error handling ·
-        automated notifications · workflow orchestration patterns</p>
+        <h3>AI Automation</h3>
+        <p>Intelligent workflow design · workflow automation · automation architecture ·
+        workflow validation</p>
+      </div>
+      <div class="cv-skill-group">
+        <h3>Automation &amp; Integration</h3>
+        <p>API integration · webhooks &amp; event flows · error handling &amp; reliability ·
+        automated notifications</p>
       </div>
       <div class="cv-skill-group">
         <h3>Web development</h3>
         <p>React &amp; TypeScript · responsive interfaces · REST &amp; serverless backends ·
         modern CSS engineering · Vite tooling</p>
-      </div>
-      <div class="cv-skill-group">
-        <h3>AI &amp; APIs</h3>
-        <p>Gemini API integration · LLM prompt engineering · structured output handling ·
-        chat experience design</p>
       </div>
       <div class="cv-skill-group">
         <h3>Additional</h3>
@@ -240,9 +244,9 @@
     </div>
   </section>
 
-  <!-- ═══ SELECTED WORK ═══ -->
+  <!-- ═══ PROJECTS ═══ -->
   <section class="cv-section">
-    <div class="cv-section__title">Selected Work</div>
+    <div class="cv-section__title">Projects</div>
     <div class="cv-note">Documented technical demonstrations — full case studies published on the portfolio site.</div>
     <div class="cv-work">
       <div class="cv-job">
@@ -255,33 +259,7 @@
           validation layer → AI structured extraction (schema-checked before trusted) →
           rules-based routing → notifications with retries and a dead-letter path.
         </p>
-        <div class="cv-job__stack">Node.js · webhooks · LLM structured output · rules engine · notifications</div>
-      </div>
-
-      <div class="cv-job">
-        <div class="cv-job__head">
-          <span class="cv-job__title">On-Site AI Portfolio Assistant</span>
-          <span class="cv-job__cat">AI Application — Secure LLM Integration</span>
-        </div>
-        <p class="cv-job__text">
-          A guard-railed AI chat experience answering strictly from verified profile facts.
-          Server-side Gemini integration — the API key never leaves the server — with input
-          caps, per-IP rate limiting and session-trimmed history.
-        </p>
-        <div class="cv-job__stack">React · TypeScript · Node serverless · Gemini API · rate limiting</div>
-      </div>
-
-      <div class="cv-job">
-        <div class="cv-job__head">
-          <span class="cv-job__title">Support-Request Triage Pattern</span>
-          <span class="cv-job__cat">AI Automation — Classification &amp; Filtering</span>
-        </div>
-        <p class="cv-job__text">
-          Classifies, prioritizes and routes inbound support requests without manual triage:
-          AI suggests the category, deterministic thresholds decide routing, unknown cases fall
-          back to a human queue instead of a confident guess.
-        </p>
-        <div class="cv-job__stack">TypeScript · prompt design · automation logic · simulation</div>
+        <div class="cv-job__stack">Python · FastAPI · LangChain · LLM structured output · webhooks · rules engine</div>
       </div>
 
       <div class="cv-job">
@@ -292,9 +270,35 @@
         <p class="cv-job__text">
           Extracts structured fields from business documents (invoice number, date, total,
           currency) with schema validation, arithmetic cross-checks and a low-confidence human
-          review queue that stops silent AI mistakes from reaching records.
+          review queue that keeps silent AI mistakes out of real records.
         </p>
-        <div class="cv-job__stack">LLM structured output · JSON schema · Node.js · validation</div>
+        <div class="cv-job__stack">Python · FastAPI · LLM structured output · JSON schema · validation engineering</div>
+      </div>
+
+      <div class="cv-job">
+        <div class="cv-job__head">
+          <span class="cv-job__title">On-Site AI Portfolio Assistant</span>
+          <span class="cv-job__cat">AI Application — Secure LLM Integration</span>
+        </div>
+        <p class="cv-job__text">
+          A guard-railed AI chat experience answering strictly from verified profile facts.
+          Server-side LLM integration — the API key never leaves the server — with input caps,
+          per-IP rate limiting and session-trimmed history.
+        </p>
+        <div class="cv-job__stack">TypeScript · React · Node serverless · Gemini API · rate limiting</div>
+      </div>
+
+      <div class="cv-job">
+        <div class="cv-job__head">
+          <span class="cv-job__title">Support-Request Triage Pattern</span>
+          <span class="cv-job__cat">AI Automation — Classification &amp; Filtering</span>
+        </div>
+        <p class="cv-job__text">
+          Classifies, prioritizes and routes inbound support requests without manual triage:
+          AI suggests the category, deterministic thresholds decide routing, and unknown cases
+          fall back to a human queue instead of a confident guess.
+        </p>
+        <div class="cv-job__stack">LLM prompt engineering · automation logic · TypeScript · simulation</div>
       </div>
     </div>
   </section>
