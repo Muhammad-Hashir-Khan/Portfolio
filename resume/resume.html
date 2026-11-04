@@ -18,11 +18,11 @@
        the bottom edge, and overflow:hidden guarantees no spill page */
     height: 297mm;
     overflow: hidden;
-    padding: 12mm 17mm 10mm;
+    padding: 13mm 17mm 11mm;
     color: #171717;
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 9.3pt;
-    line-height: 1.42;
+    font-size: 9.5pt;
+    line-height: 1.45;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -70,13 +70,13 @@
   }
 
   /* ── sections ────────────────────────────────────────────────────── */
-  .cv-section { margin-top: 4.6mm; }
+  .cv-section { margin-top: 5.8mm; }
 
   .cv-section__title {
     display: flex;
     align-items: baseline;
     gap: 3.5mm;
-    font-size: 8.6pt;
+    font-size: 8.8pt;
     font-weight: 650;
     letter-spacing: 0.24em;
     text-transform: uppercase;
@@ -91,100 +91,92 @@
     transform: translateY(-0.6mm);
   }
 
-  .cv-section__body { margin-top: 2.4mm; }
+  .cv-section__body { margin-top: 2.8mm; }
 
   /* summary */
   .cv-summary { color: #2c2c2c; }
+  .cv-summary b { font-weight: 650; color: #101010; }
 
-  /* skills */
-  .cv-skills { column-count: 2; column-gap: 10mm; }
+  /* capabilities grid — 2 × 2 boxes */
+  .cv-caps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.6mm 5mm;
+  }
 
-  .cv-skill-group { break-inside: avoid; margin-top: 1.8mm; }
-  .cv-skill-group:first-child { margin-top: 0; }
+  .cv-capbox {
+    border: 0.5pt solid #dedede;
+    background: #fbfbfb;
+    padding: 2.8mm 3.4mm 2.6mm;
+    break-inside: avoid;
+  }
 
-  .cv-skill-group h3 {
-    font-size: 8.2pt;
+  .cv-capbox h3 {
+    font-size: 8.4pt;
     font-weight: 650;
     text-transform: uppercase;
-    letter-spacing: 0.10em;
-    color: #262626;
-    margin-bottom: 0.8mm;
-  }
-
-  .cv-skill-group p { color: #333333; }
-
-  /* selected work */
-  .cv-note {
-    font-size: 7.6pt;
-    font-style: italic;
-    color: #6b6b6b;
-    margin-top: 1.2mm;
-  }
-
-  .cv-work { margin-top: 2.4mm; }
-
-  .cv-job { margin-top: 2.2mm; }
-  .cv-job:first-child { margin-top: 0; }
-
-  .cv-job__head {
-    display: flex;
-    align-items: baseline;
-    gap: 2.5mm;
-    flex-wrap: wrap;
-  }
-
-  .cv-job__title {
-    font-size: 9.4pt;
-    font-weight: 650;
+    letter-spacing: 0.12em;
     color: #101010;
+    margin-bottom: 1.6mm;
   }
 
-  .cv-job__cat {
-    font-size: 7.4pt;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  .cv-capbox ul { list-style: none; }
+
+  .cv-capbox li {
+    position: relative;
+    padding-left: 3.2mm;
+    color: #333333;
+    font-size: 8.9pt;
+    margin-top: 0.7mm;
+  }
+
+  .cv-capbox li:first-child { margin-top: 0; }
+
+  .cv-capbox li::before {
+    content: "–";
+    position: absolute;
+    left: 0;
     color: #6d6d6d;
   }
 
-  .cv-job__text { margin-top: 0.8mm; color: #2e2e2e; }
-
-  .cv-job__stack {
-    margin-top: 0.7mm;
-    font-size: 7.6pt;
-    color: #5c5c5c;
-    letter-spacing: 0.02em;
+  /* technical skills — two flow columns */
+  .cv-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 10mm;
   }
 
-  /* process */
+  .cv-cols p { color: #2e2e2e; }
+  .cv-cols .sep { color: #9a9a9a; }
+
+  /* how I work */
   .cv-process { color: #2c2c2c; }
   .cv-process b { font-weight: 650; }
 
-  /* availability footer */
-  .cv-foot { margin-top: 5.4mm; border-top: 0.6pt solid #2b2b2b; padding-top: 2.4mm; }
+  /* open to — bottom bar */
+  .cv-foot { margin-top: 6mm; border-top: 0.6pt solid #2b2b2b; padding-top: 2.8mm; }
 
-  .cv-foot__row {
-    display: flex;
-    justify-content: space-between;
-    gap: 6mm;
-    font-size: 8pt;
-    color: #333333;
-  }
+  .cv-foot__line { font-size: 8.8pt; color: #2e2e2e; }
 
-  .cv-foot__row b {
+  .cv-foot__line b {
     font-weight: 650;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-size: 7.6pt;
+    letter-spacing: 0.16em;
+    font-size: 7.8pt;
     color: #101010;
   }
+
+  .cv-foot__line .sep { color: #b0b0b0; padding: 0 2mm; }
 </style>
 </head>
 <body>
 
-  <!-- ═══ HEADER ═══ -->
+  <!-- ═══ NAME + TITLE ═══ -->
   <header class="cv-header">
     <h1 class="cv-name">Muhammad Hashir Khan</h1>
     <div class="cv-role">AI Automation Engineer</div>
+
+    <!-- ═══ CONTACT LINKS ═══ -->
     <div class="cv-contact">
       <a href="mailto:muhammadhashirkhan.official@gmail.com">muhammadhashirkhan.official@gmail.com</a><span class="sep">·</span><a href="tel:+923122347665">+92 312 2347665</a>
       <span class="sep">·</span>Pakistan — Remote-friendly
@@ -198,126 +190,92 @@
     <hr class="cv-rule" />
   </header>
 
-  <!-- ═══ SUMMARY ═══ -->
+  <!-- ═══ PROFESSIONAL SUMMARY ═══ -->
   <section class="cv-section">
     <div class="cv-section__title">Summary</div>
     <div class="cv-section__body cv-summary">
-      AI Automation Engineer with 3+ years of professional experience building AI automation with
-      Python and TypeScript — folding repetitive, rule-heavy operations into intelligent workflows
-      that run with fewer manual touches. Automation designed around real operational needs: data
-      validated on entry, LLM output structured for downstream trust, APIs and webhooks wired
-      together, and failures that degrade safely instead of silently. Core tooling includes
-      FastAPI services, LangChain workflows, RAG pipelines and vector databases; around that core
-      — websites, applications, WordPress builds, search visibility, campaigns and content.
+      <b>I help businesses save time, get more leads and work smarter with AI + Web + Ads.</b>
+      I am an AI Automation Engineer with hands-on experience building real workflows, websites
+      and campaigns through freelance projects, personal builds and continuous learning — from
+      AI agents and business automation to modern web development, WordPress builds, Meta Ads
+      and SEO growth. One engineer for AI automation, frontend, backend, WordPress and ads.
     </div>
   </section>
 
-  <!-- ═══ SKILLS ═══ -->
+  <!-- ═══ CORE CAPABILITIES — WHAT I CAN DO FOR YOU ═══ -->
   <section class="cv-section">
-    <div class="cv-section__title">Skills</div>
-    <div class="cv-section__body cv-skills">
-      <div class="cv-skill-group">
-        <h3>Python · AI &amp; APIs <span style="letter-spacing:0">— primary</span></h3>
-        <p>Python · FastAPI · LangChain · LangGraph · OpenAI API · RAG · vector databases
-        (Qdrant / Pinecone) · Gemini API · LLM prompt engineering · structured output
-        handling</p>
+    <div class="cv-section__title">What I Can Do For You</div>
+    <div class="cv-section__body cv-caps">
+
+      <div class="cv-capbox">
+        <h3>AI Automation &amp; Workflows</h3>
+        <ul>
+          <li>Build intelligent workflows — lead capture, auto-replies, data validation, notifications</li>
+          <li>Connect APIs, webhooks, CRMs, Sheets, WhatsApp, Email</li>
+          <li>AI chatbots, prompt engineering, structured output, RAG basics</li>
+        </ul>
       </div>
-      <div class="cv-skill-group">
-        <h3>AI Automation</h3>
-        <p>Intelligent workflow design · workflow automation · automation architecture ·
-        workflow validation</p>
+
+      <div class="cv-capbox">
+        <h3>Frontend &amp; Backend Development</h3>
+        <ul>
+          <li>Responsive websites &amp; web apps in React, TypeScript, HTML/CSS</li>
+          <li>REST APIs, FastAPI, Node.js, serverless backends, database integration</li>
+          <li>Landing pages, business websites, dashboards, WordPress builds</li>
+        </ul>
       </div>
-      <div class="cv-skill-group">
-        <h3>Automation &amp; Integration</h3>
-        <p>API integration · webhooks &amp; event flows · error handling &amp; reliability ·
-        automated notifications</p>
+
+      <div class="cv-capbox">
+        <h3>Ads, SEO &amp; Growth</h3>
+        <ul>
+          <li>Meta Ads (Facebook / Instagram) — campaign setup, targeting, creative testing</li>
+          <li>SEO — on-page, keyword research, technical basics, Google Business</li>
+          <li>Funnels and landing pages built for lead generation</li>
+        </ul>
       </div>
-      <div class="cv-skill-group">
-        <h3>Web development</h3>
-        <p>React &amp; TypeScript · responsive interfaces · REST &amp; serverless backends ·
-        modern CSS engineering · Vite tooling</p>
+
+      <div class="cv-capbox">
+        <h3>Content &amp; Operations</h3>
+        <ul>
+          <li>Content writing, automation documentation, SOPs</li>
+          <li>Reduce manual, repetitive work with smart automation</li>
+        </ul>
       </div>
-      <div class="cv-skill-group">
-        <h3>Additional</h3>
-        <p>App development · WordPress · SEO · Meta Ads · content writing</p>
-      </div>
+
     </div>
   </section>
 
-  <!-- ═══ PROJECTS ═══ -->
+  <!-- ═══ TECHNICAL SKILLS ═══ -->
   <section class="cv-section">
-    <div class="cv-section__title">Projects</div>
-    <div class="cv-note">Documented technical demonstrations — full case studies published on the portfolio site.</div>
-    <div class="cv-work">
-      <div class="cv-job">
-        <div class="cv-job__head">
-          <span class="cv-job__title">Intelligent Lead-Intake Workflow</span>
-          <span class="cv-job__cat">AI Automation — Data Capture &amp; Routing</span>
-        </div>
-        <p class="cv-job__text">
-          Turns scattered inbound inquiries into validated, routed records: webhook intake →
-          validation layer → AI structured extraction (schema-checked before trusted) →
-          rules-based routing → notifications with retries and a dead-letter path.
-        </p>
-        <div class="cv-job__stack">Python · FastAPI · LangChain · LLM structured output · webhooks · rules engine</div>
-      </div>
-
-      <div class="cv-job">
-        <div class="cv-job__head">
-          <span class="cv-job__title">Invoice Field Assistant</span>
-          <span class="cv-job__cat">AI Automation — Document Data Extraction</span>
-        </div>
-        <p class="cv-job__text">
-          Extracts structured fields from business documents (invoice number, date, total,
-          currency) with schema validation, arithmetic cross-checks and a low-confidence human
-          review queue that keeps silent AI mistakes out of real records.
-        </p>
-        <div class="cv-job__stack">Python · FastAPI · LLM structured output · JSON schema · validation engineering</div>
-      </div>
-
-      <div class="cv-job">
-        <div class="cv-job__head">
-          <span class="cv-job__title">On-Site AI Portfolio Assistant</span>
-          <span class="cv-job__cat">AI Application — Secure LLM Integration</span>
-        </div>
-        <p class="cv-job__text">
-          A guard-railed AI chat experience answering strictly from verified profile facts.
-          Server-side LLM integration — the API key never leaves the server — with input caps,
-          per-IP rate limiting and session-trimmed history.
-        </p>
-        <div class="cv-job__stack">TypeScript · React · Node serverless · Gemini API · rate limiting</div>
-      </div>
-
-      <div class="cv-job">
-        <div class="cv-job__head">
-          <span class="cv-job__title">Support-Request Triage Pattern</span>
-          <span class="cv-job__cat">AI Automation — Classification &amp; Filtering</span>
-        </div>
-        <p class="cv-job__text">
-          Classifies, prioritizes and routes inbound support requests without manual triage:
-          AI suggests the category, deterministic thresholds decide routing, and unknown cases
-          fall back to a human queue instead of a confident guess.
-        </p>
-        <div class="cv-job__stack">LLM prompt engineering · automation logic · TypeScript · simulation</div>
-      </div>
+    <div class="cv-section__title">Technical Skills</div>
+    <div class="cv-section__body cv-cols">
+      <p>Python <span class="sep">·</span> FastAPI <span class="sep">·</span> LangChain
+      <span class="sep">·</span> OpenAI API <span class="sep">·</span> Gemini API
+      <span class="sep">·</span> LLM Prompt Engineering <span class="sep">·</span> React
+      <span class="sep">·</span> TypeScript <span class="sep">·</span> JavaScript</p>
+      <p>Node.js <span class="sep">·</span> REST APIs <span class="sep">·</span> Webhooks
+      <span class="sep">·</span> HTML/CSS <span class="sep">·</span> WordPress
+      <span class="sep">·</span> Meta Ads <span class="sep">·</span> SEO
+      <span class="sep">·</span> Google Ads Basics <span class="sep">·</span> Content Writing</p>
     </div>
   </section>
 
-  <!-- ═══ PROCESS ═══ -->
+  <!-- ═══ HOW I WORK (1 line) ═══ -->
   <section class="cv-section">
-    <div class="cv-section__title">Working Process</div>
+    <div class="cv-section__title">How I Work</div>
     <div class="cv-section__body cv-process">
       <b>Discover</b> the real bottleneck → <b>Plan</b> the workflow and success criteria →
       <b>Build</b> in verifiable increments → <b>Test</b> edge cases and safe failure →
-      <b>Deliver</b> with documentation → <b>Improve</b> operations that continue.
+      <b>Deliver</b> with documentation → <b>Improve</b> what continues.
     </div>
   </section>
 
-  <!-- ═══ FOOTER ═══ -->
+  <!-- ═══ OPEN TO ═══ -->
   <footer class="cv-foot">
-    <div class="cv-foot__row">
-      <span><b>Open to opportunities</b><br />Remote roles · full-time positions · freelance projects · technical collaboration</span>
-      <span style="text-align:right"><b>On request</b><br />Live demonstrations · full case studies · direct discussion via email or WhatsApp</span>
+    <div class="cv-foot__line">
+      <b>Open to:</b> Remote Roles <span class="sep">|</span> Full-time <span class="sep">|</span>
+      Freelance <span class="sep">|</span> AI Automation <span class="sep">|</span>
+      Web Development <span class="sep">|</span> Ads &amp; Growth
     </div>
   </footer>
 
