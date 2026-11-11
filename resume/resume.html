@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Muhammad Hashir Khan — AI Automation Engineer</title>
 <style>
-  /* ── one-page A4 business CV — minimalist, grayscale only ────────── */
+  /* ── one-page A4 business CV — beginner level, minimalist grayscale ── */
   @page { size: A4; margin: 0; }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,11 +18,17 @@
        the bottom edge, and overflow:hidden guarantees no spill page */
     height: 297mm;
     overflow: hidden;
-    padding: 13mm 17mm 11mm;
+    padding: 14mm 17mm 12mm;
     color: #171717;
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 9.5pt;
-    line-height: 1.45;
+    font-size: 9.9pt;
+    line-height: 1.52;
+    /* flex + space-between spreads the content down the whole page so
+       the Open To bar sits at the bottom — no dead space underneath */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4.5mm;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -70,8 +76,6 @@
   }
 
   /* ── sections ────────────────────────────────────────────────────── */
-  .cv-section { margin-top: 5.8mm; }
-
   .cv-section__title {
     display: flex;
     align-items: baseline;
@@ -101,33 +105,33 @@
   .cv-caps {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3.6mm 5mm;
+    gap: 3.8mm 5mm;
   }
 
   .cv-capbox {
     border: 0.5pt solid #dedede;
     background: #fbfbfb;
-    padding: 2.8mm 3.4mm 2.6mm;
+    padding: 3.2mm 3.6mm 3mm;
     break-inside: avoid;
   }
 
   .cv-capbox h3 {
-    font-size: 8.4pt;
+    font-size: 8.5pt;
     font-weight: 650;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #101010;
-    margin-bottom: 1.6mm;
+    margin-bottom: 1.8mm;
   }
 
   .cv-capbox ul { list-style: none; }
 
   .cv-capbox li {
     position: relative;
-    padding-left: 3.2mm;
+    padding-left: 3.4mm;
     color: #333333;
-    font-size: 8.9pt;
-    margin-top: 0.7mm;
+    font-size: 9.2pt;
+    margin-top: 1.2mm;
   }
 
   .cv-capbox li:first-child { margin-top: 0; }
@@ -153,8 +157,8 @@
   .cv-process { color: #2c2c2c; }
   .cv-process b { font-weight: 650; }
 
-  /* open to — bottom bar */
-  .cv-foot { margin-top: 6mm; border-top: 0.6pt solid #2b2b2b; padding-top: 2.8mm; }
+  /* open to — bottom bar (body's flex gap keeps it just off the edge) */
+  .cv-foot { border-top: 0.6pt solid #2b2b2b; padding-top: 2.8mm; }
 
   .cv-foot__line { font-size: 8.8pt; color: #2e2e2e; }
 
@@ -191,54 +195,54 @@
   </header>
 
   <!-- ═══ PROFESSIONAL SUMMARY ═══ -->
-  <section class="cv-section">
+  <section>
     <div class="cv-section__title">Summary</div>
     <div class="cv-section__body cv-summary">
       <b>I help businesses save time, get more leads and work smarter with AI + Web + Ads.</b>
-      I am an AI Automation Engineer with hands-on experience building real workflows, websites
-      and campaigns through freelance projects, personal builds and continuous learning — from
-      AI agents and business automation to modern web development, WordPress builds, Meta Ads
-      and SEO growth. One engineer for AI automation, frontend, backend, WordPress and ads.
+      I am an AI Automation Engineer at the start of my career. I build simple, useful AI
+      automations, clean websites and online campaigns. I learn fast, work carefully and keep
+      every project tested and delivered on time. I am looking for a team where I can build
+      real things, get feedback and grow every day.
     </div>
   </section>
 
   <!-- ═══ CORE CAPABILITIES — WHAT I CAN DO FOR YOU ═══ -->
-  <section class="cv-section">
+  <section>
     <div class="cv-section__title">What I Can Do For You</div>
     <div class="cv-section__body cv-caps">
 
       <div class="cv-capbox">
         <h3>AI Automation &amp; Workflows</h3>
         <ul>
-          <li>Build intelligent workflows — lead capture, auto-replies, data validation, notifications</li>
-          <li>Connect APIs, webhooks, CRMs, Sheets, WhatsApp, Email</li>
-          <li>AI chatbots, prompt engineering, structured output, RAG basics</li>
+          <li>Build simple AI automations — lead capture, auto-replies, reminders, notifications</li>
+          <li>Connect apps together — APIs, webhooks, Google Sheets, WhatsApp, Email</li>
+          <li>Build simple AI chatbots, write clear prompts and keep AI output clean and usable</li>
         </ul>
       </div>
 
       <div class="cv-capbox">
-        <h3>Frontend &amp; Backend Development</h3>
+        <h3>Website &amp; App Development</h3>
         <ul>
-          <li>Responsive websites &amp; web apps in React, TypeScript, HTML/CSS</li>
-          <li>REST APIs, FastAPI, Node.js, serverless backends, database integration</li>
-          <li>Landing pages, business websites, dashboards, WordPress builds</li>
+          <li>Build responsive websites and web apps with React, TypeScript and HTML/CSS</li>
+          <li>Build simple APIs with FastAPI and Node.js</li>
+          <li>Landing pages, business websites, dashboards and WordPress</li>
         </ul>
       </div>
 
       <div class="cv-capbox">
         <h3>Ads, SEO &amp; Growth</h3>
         <ul>
-          <li>Meta Ads (Facebook / Instagram) — campaign setup, targeting, creative testing</li>
-          <li>SEO — on-page, keyword research, technical basics, Google Business</li>
-          <li>Funnels and landing pages built for lead generation</li>
+          <li>Set up Meta Ads (Facebook / Instagram) — targeting and creative testing</li>
+          <li>SEO basics — on-page, keyword research, Google Business</li>
+          <li>Simple funnels and landing pages to collect leads</li>
         </ul>
       </div>
 
       <div class="cv-capbox">
         <h3>Content &amp; Operations</h3>
         <ul>
-          <li>Content writing, automation documentation, SOPs</li>
-          <li>Reduce manual, repetitive work with smart automation</li>
+          <li>Content writing and clear, simple documentation</li>
+          <li>Use automation to remove small, repetitive tasks</li>
         </ul>
       </div>
 
@@ -246,7 +250,7 @@
   </section>
 
   <!-- ═══ TECHNICAL SKILLS ═══ -->
-  <section class="cv-section">
+  <section>
     <div class="cv-section__title">Technical Skills</div>
     <div class="cv-section__body cv-cols">
       <p>Python <span class="sep">·</span> FastAPI <span class="sep">·</span> LangChain
@@ -261,12 +265,11 @@
   </section>
 
   <!-- ═══ HOW I WORK (1 line) ═══ -->
-  <section class="cv-section">
+  <section>
     <div class="cv-section__title">How I Work</div>
     <div class="cv-section__body cv-process">
-      <b>Discover</b> the real bottleneck → <b>Plan</b> the workflow and success criteria →
-      <b>Build</b> in verifiable increments → <b>Test</b> edge cases and safe failure →
-      <b>Deliver</b> with documentation → <b>Improve</b> what continues.
+      <b>Understand</b> the problem → <b>Plan</b> small → <b>Build</b> step by step →
+      <b>Test</b> carefully → <b>Deliver</b> with notes → <b>Keep improving</b> with feedback.
     </div>
   </section>
 

@@ -16,6 +16,7 @@ const NOTICE =
 export default function ProjectsGate() {
   const [notice, setNotice] = useState(false);
   const timer = useRef(0);
+  const stageRef = useRef<HTMLDivElement | null>(null);
 
   const notify = () => {
     setNotice(true);
@@ -23,12 +24,27 @@ export default function ProjectsGate() {
     timer.current = window.setTimeout(() => setNotice(false), 5200);
   };
 
+  // Expose the footer's live height so the gate panel can sit exactly in
+  // the middle of the space between the navigation bar and the footer
+  // (the footer height varies across breakpoints).
+  useEffect(() => {
+    const stage = stageRef.current;
+    const footer = document.querySelector('.footer');
+    if (!stage || !footer) return;
+    const measure = () =>
+      stage.style.setProperty('--footer-h', `${footer.getBoundingClientRect().height}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+
   // never leave the timer running after unmount
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   return (
     <Page className="projects-page">
-      <div className="pgate">
+      <div className="pgate" ref={stageRef}>
         <div className="pgate__panel">
           {/* redacted, blurred placeholder content behind the eye */}
           <div className="pgate__blur" aria-hidden="true">
@@ -37,6 +53,10 @@ export default function ProjectsGate() {
             <i />
             <i />
           </div>
+
+          <p className="pgate__tag" aria-hidden="true">
+            Hide
+          </p>
 
           <button
             type="button"

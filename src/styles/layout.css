@@ -1110,11 +1110,19 @@
    ════════════════════════════════════════════════════════════════════ */
 
 .pgate {
-  min-height: calc(100vh - var(--strip-h) - var(--nav-h));
+  /* the fixed header (strip + nav, 108px) does not take flow space, so
+     the gate starts at the top of the flow: pad the header out on BOTH
+     ends and cap the height at the live footer edge → the panel then
+     centers exactly in the space between the navbar and the footer */
+  --pgate-clear: calc(var(--strip-h) + var(--nav-h));
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--footer-h, 0px));
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 1.25rem 4rem;
+  /* a slim bottom pad keeps air below the panel while the flex center
+     stays visually dead-center between navbar and footer */
+  padding: var(--pgate-clear) 1.25rem 1.25rem;
 }
 
 .pgate__panel {
@@ -1162,6 +1170,19 @@
   background: linear-gradient(90deg, rgba(255, 48, 59, 0.5), rgba(255, 48, 59, 0.16));
 }
 .pgate__blur i:nth-child(4) { width: 64%; }
+
+/* small "hide" tag riding above the eye */
+.pgate__tag {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--crimson);
+}
 
 /* the eye — the only interactive element */
 .pgate__eye {
