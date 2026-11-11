@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Muhammad Hashir Khan — Web Developer (JavaScript) · Entry-Level CV</title>
+<style>
+  /* ── one-page A4 business CV — entry level, minimalist grayscale ── */
+  @page { size: A4; margin: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { background: #ffffff; }
+
+  body {
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    padding: 13mm 17mm 11mm;
+    color: #171717;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.45;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── header ──────────────────────────────────────────────────────── */
+  .cv-header { text-align: center; }
+
+  .cv-name {
+    font-size: 17pt;
+    font-weight: 650;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: #101010;
+  }
+
+  .cv-role {
+    margin-top: 2.2mm;
+    font-size: 9.5pt;
+    font-weight: 600;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: #4a4a4a;
+  }
+
+  .cv-contact {
+    margin-top: 3.2mm;
+    font-size: 8pt;
+    color: #333333;
+  }
+
+  .cv-contact .sep { color: #9a9a9a; padding: 0 1.6mm; }
+
+  .cv-links {
+    margin-top: 1.2mm;
+    font-size: 7.6pt;
+    color: #4f4f4f;
+  }
+
+  .cv-links a, .cv-contact a { color: inherit; text-decoration: none; }
+
+  .cv-rule {
+    margin: 4.4mm 0 0;
+    border: 0;
+    border-top: 0.6pt solid #2b2b2b;
+  }
+
+  /* ── sections ────────────────────────────────────────────────────── */
+  .cv-section { margin-top: 5.8mm; }
+
+  .cv-section__title {
+    display: flex;
+    align-items: baseline;
+    gap: 3.5mm;
+    font-size: 8.8pt;
+    font-weight: 650;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #101010;
+    white-space: nowrap;
+  }
+
+  .cv-section__title::after {
+    content: "";
+    flex: 1;
+    border-top: 0.5pt solid #cfcfcf;
+    transform: translateY(-0.6mm);
+  }
+
+  .cv-section__body { margin-top: 2.8mm; }
+
+  .cv-summary { color: #2c2c2c; }
+  .cv-summary b { font-weight: 650; color: #101010; }
+
+  /* capabilities grid — 2 × 2 boxes */
+  .cv-caps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.6mm 5mm;
+  }
+
+  .cv-capbox {
+    border: 0.5pt solid #dedede;
+    background: #fbfbfb;
+    padding: 2.8mm 3.4mm 2.6mm;
+    break-inside: avoid;
+  }
+
+  .cv-capbox h3 {
+    font-size: 8.4pt;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #101010;
+    margin-bottom: 1.6mm;
+  }
+
+  .cv-capbox ul { list-style: none; }
+
+  .cv-capbox li {
+    position: relative;
+    padding-left: 3.2mm;
+    color: #333333;
+    font-size: 8.9pt;
+    margin-top: 0.7mm;
+  }
+
+  .cv-capbox li:first-child { margin-top: 0; }
+
+  .cv-capbox li::before {
+    content: "–";
+    position: absolute;
+    left: 0;
+    color: #6d6d6d;
+  }
+
+  /* technical skills — two flow columns */
+  .cv-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 10mm;
+  }
+
+  .cv-cols p { color: #2e2e2e; }
+  .cv-cols .sep { color: #9a9a9a; }
+
+  /* how I work */
+  .cv-process { color: #2c2c2c; }
+  .cv-process b { font-weight: 650; }
+
+  /* open to — bottom bar */
+  .cv-foot { margin-top: 6mm; border-top: 0.6pt solid #2b2b2b; padding-top: 2.8mm; }
+
+  .cv-foot__line { font-size: 8.8pt; color: #2e2e2e; }
+
+  .cv-foot__line b {
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 7.8pt;
+    color: #101010;
+  }
+
+  .cv-foot__line .sep { color: #b0b0b0; padding: 0 2mm; }
+</style>
+</head>
+<body>
+
+  <!-- ═══ NAME + TITLE ═══ -->
+  <header class="cv-header">
+    <h1 class="cv-name">Muhammad Hashir Khan</h1>
+    <div class="cv-role">Web Developer — JavaScript · Entry Level</div>
+
+    <!-- ═══ CONTACT LINKS ═══ -->
+    <div class="cv-contact">
+      <a href="mailto:muhammadhashirkhan.official@gmail.com">muhammadhashirkhan.official@gmail.com</a><span class="sep">·</span><a href="tel:+923122347665">+92 312 2347665</a>
+      <span class="sep">·</span>Pakistan — Remote-friendly
+    </div>
+    <div class="cv-links">
+      <a href="https://www.linkedin.com/in/muhammad-hashir-khan">linkedin.com/in/muhammad-hashir-khan</a>
+      <span class="sep">·</span> <a href="https://github.com/Muhammad-Hashir-Khan">github.com/Muhammad-Hashir-Khan</a>
+      <span class="sep">·</span> <a href="https://www.upwork.com/freelancers/~016c3591be4e9f68d4">upwork.com/freelancers/~016c3591be4e9f68d4</a>
+      <span class="sep">·</span> <a href="https://www.fiverr.com/mhashirkhan__">fiverr.com/mhashirkhan__</a>
+    </div>
+    <hr class="cv-rule" />
+  </header>
+
+  <!-- ═══ PROFESSIONAL SUMMARY ═══ -->
+  <section class="cv-section">
+    <div class="cv-section__title">Summary</div>
+    <div class="cv-section__body cv-summary">
+      <b>I build clean, fast, responsive websites with JavaScript — and I learn fast on real
+      work.</b> I am an entry-level web developer working in HTML, CSS, modern JavaScript and
+      React basics. I turn designs and ideas into working, mobile-friendly pages, keep every
+      practice build public on GitHub as I learn, and I am looking for a junior role where I
+      can write real code, take feedback well and grow with a team.
+    </div>
+  </section>
+
+  <!-- ═══ WHAT I CAN DO ═══ -->
+  <section class="cv-section">
+    <div class="cv-section__title">What I Can Do For You</div>
+    <div class="cv-section__body cv-caps">
+
+      <div class="cv-capbox">
+        <h3>Frontend Basics</h3>
+        <ul>
+          <li>Responsive, mobile-first pages with HTML5, CSS3 and JavaScript (ES6+)</li>
+          <li>Flexbox &amp; grid layouts, clean and semantic markup</li>
+          <li>Accessible pages that work on real devices, not just the demo screen</li>
+        </ul>
+      </div>
+
+      <div class="cv-capbox">
+        <h3>React &amp; Components</h3>
+        <ul>
+          <li>React components with props and state</li>
+          <li>Simple single-page applications with client-side navigation</li>
+          <li>Fetching and rendering REST API data in the UI</li>
+        </ul>
+      </div>
+
+      <div class="cv-capbox">
+        <h3>Backend &amp; Data Basics</h3>
+        <ul>
+          <li>Small Node.js serverless endpoints</li>
+          <li>Consuming APIs with fetch and JSON</li>
+          <li>Form handling and basic input validation</li>
+        </ul>
+      </div>
+
+      <div class="cv-capbox">
+        <h3>Tools &amp; Workflow</h3>
+        <ul>
+          <li>Git &amp; GitHub — every build published publicly as I learn</li>
+          <li>npm &amp; Vite tooling, debugging with browser DevTools</li>
+          <li>WordPress edits and basic SEO practice</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ TECHNICAL SKILLS ═══ -->
+  <section class="cv-section">
+    <div class="cv-section__title">Technical Skills</div>
+    <div class="cv-section__body cv-cols">
+      <p>JavaScript (ES6+) <span class="sep">·</span> HTML5 <span class="sep">·</span> CSS3
+      <span class="sep">·</span> React <span class="sep">·</span> TypeScript basics
+      <span class="sep">·</span> Node.js basics <span class="sep">·</span> REST APIs
+      <span class="sep">·</span> fetch &amp; JSON</p>
+      <p>Git &amp; GitHub <span class="sep">·</span> npm &amp; Vite
+      <span class="sep">·</span> Responsive Design <span class="sep">·</span> DevTools
+      <span class="sep">·</span> WordPress <span class="sep">·</span> SEO basics
+      <span class="sep">·</span> Content Writing</p>
+    </div>
+  </section>
+
+  <!-- ═══ HOW I WORK (1 line) ═══ -->
+  <section class="cv-section">
+    <div class="cv-section__title">How I Work</div>
+    <div class="cv-section__body cv-process">
+      <b>Read</b> the requirement carefully → <b>Plan</b> small and clearly → <b>Build</b> in
+      verifiable steps → <b>Test</b> on real devices → <b>Deliver</b> with notes →
+      <b>Improve</b> with feedback.
+    </div>
+  </section>
+
+  <!-- ═══ OPEN TO ═══ -->
+  <footer class="cv-foot">
+    <div class="cv-foot__line">
+      <b>Open to:</b> Junior Developer Roles <span class="sep">|</span> Internships
+      <span class="sep">|</span> Freelance <span class="sep">|</span> Remote or On-site
+      <span class="sep">|</span> Web Development <span class="sep">|</span> WordPress &amp; Support
+    </div>
+  </footer>
+
+</body>
+</html>

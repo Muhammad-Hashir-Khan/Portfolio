@@ -10,7 +10,8 @@ import Chatbot from './components/Chatbot';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ServicesPage from './pages/ServicesPage';
-import ProjectsPage from './pages/ProjectsPage';
+// ProjectsPage is temporarily gated — swap back when the page publishes:
+import ProjectsGate from './pages/ProjectsGate';
 import SkillsPage from './pages/SkillsPage';
 import PricingPage from './pages/PricingPage';
 import ContactPage from './pages/ContactPage';
@@ -72,7 +73,7 @@ export default function App() {
             <Route path="/" element={<HomePage ready={routeReady} />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/projects" element={<ProjectsGate />} />
             <Route path="/skills" element={<SkillsPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/contact" element={<ContactPage />} />
