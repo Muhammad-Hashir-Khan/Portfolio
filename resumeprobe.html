@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8" /><title>resumeprobe</title></head>
+<body>
+<iframe id="f" style="width:1200px;height:900px;border:0"></iframe>
+<script>
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  window.addEventListener('load', () => {
+    document.getElementById('f').src = './' + '#/';
+    setTimeout(async () => {
+      try {
+        const f = document.getElementById('f');
+        const d = f.contentDocument;
+        await sleep(6000);
+        const hero = d.querySelector('a.btn--ghost, button.btn--ghost');
+        const heroInfo = hero
+          ? hero.tagName + ' | ' + (hero.getAttribute('href') || '(no href)') + ' | ' + hero.textContent.trim().slice(0, 30)
+          : 'hero button not found';
+        f.src = './' + '#/contact';
+        await sleep(5000);
+        const d2 = f.contentDocument;
+        const contactBtn = d2.querySelector('a.resume-btn, button.resume-btn, a.btn--ghost, button.btn--ghost');
+        const contactInfo = contactBtn
+          ? contactBtn.tagName + ' | ' + (contactBtn.getAttribute('href') || '(no href)') + ' | ' + contactBtn.textContent.trim().slice(0, 30)
+          : 'contact button not found';
+        document.body.textContent = 'HERO>> ' + heroInfo + ' ||CONTACT>> ' + contactInfo;
+      } catch (e) {
+        document.body.textContent = 'ERR ' + e.message;
+      }
+    }, 10000);
+  });
+</script>
+</body>
+</html>
